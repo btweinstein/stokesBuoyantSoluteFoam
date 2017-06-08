@@ -50,6 +50,13 @@ int main(int argc, char *argv[])
 
     Info<< "\nStarting time loop\n" << endl;
 
+    // Setup the field corresponding the source
+    volVectorField source
+    (
+	"source",
+	Ra*ghat*c
+    );
+
     while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;

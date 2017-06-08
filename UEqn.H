@@ -13,5 +13,5 @@
 
     if (simple.momentumPredictor())
     {
-        solve(UEqn == -fvc::grad(p) + Ra*ghat*c);
+        solve(UEqn == -fvc::grad(p) + source);
     }
