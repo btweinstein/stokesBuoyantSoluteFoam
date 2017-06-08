@@ -90,4 +90,5 @@ dimensionedScalar Ra
 );
 
 // Create the gravitational vector...presumably in the zhat direction
-vector<double> ghat (0,0,-1);
+// So be careful when defining your coordinate system (especially in 2d, make it x-z). 
+vector ghat (0.0,0.0,-1.0);
