@@ -86,6 +86,7 @@ dimensionedScalar Ra
      transportProperties.lookup("Ra")
  );
 
-// Create the gravitational vector...presumably in the zhat direction
-// So be careful when defining your coordinate system (especially in 2d, make it x-z, not x-y). 
+// Create the gravitational unit vector...presumably in the zhat direction
+// So be careful when defining your coordinate system 
+// (especially in 2d, make it x-z, not x-y). 
 vector ghat (0.0,0.0,-1.0);

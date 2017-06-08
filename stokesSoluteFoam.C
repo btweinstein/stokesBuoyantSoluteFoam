@@ -50,7 +50,8 @@ int main(int argc, char *argv[])
 
     Info<< "\nStarting time loop\n" << endl;
 
-    // Setup the field corresponding the source
+    // Setup the field corresponding the source *before* simple loop, 
+    // as it is constant in that.
     volVectorField source
     (
 	"source",
