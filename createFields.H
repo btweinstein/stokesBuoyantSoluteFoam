@@ -69,15 +69,15 @@ dimensionedScalar nu_star
 (
 	"nu_star",
 	dimensionSet(0, 2, -1, 0, 0, 0, 0),
-	1.0,
-)
+	1.0
+);
 
 dimensionedScalar D_star
 (
 	"D_star",
 	dimensionSet(0, 2, -1, 0, 0, 0, 0),
-	1.0,
-)
+	1.0
+);
 
 
 Info<< "Reading Ra \n" << endl;

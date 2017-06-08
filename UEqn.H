@@ -4,7 +4,7 @@
     (
 	//Pay attention to signs...we need the negative 
 	// sign on the laplacian for whatever reason...
-	-fvm::laplacian(nu, U)
+	-fvm::laplacian(nu_star, U)
     );
 
     fvVectorMatrix& UEqn = tUEqn.ref();
