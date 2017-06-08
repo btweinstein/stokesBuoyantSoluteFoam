@@ -82,3 +82,12 @@ dimensionedScalar D
 (
      transportProperties.lookup("D")
  );
+
+Info<< "Reading Rayleigh Number Ra \n" << endl;
+dimensionedScalar Ra
+(
+     transportProperties.lookup("Ra")
+);
+
+// Create the gravitational vector...presumably in the zhat direction
+vector<double> ghat (0,0,-1);
