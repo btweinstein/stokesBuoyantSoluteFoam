@@ -26,6 +26,21 @@ volVectorField U
     mesh
 );
 
+Info<< "Reading field c\n" << endl;
+volScalarField c
+(
+    IOobject
+    (
+        "c",
+        runTime.timeName(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::AUTO_WRITE
+    ),
+    mesh
+);
+
+
 #include "createPhi.H"
 
 
@@ -34,6 +49,7 @@ scalar pRefValue = 0.0;
 setRefCell(p, simple.dict(), pRefCell, pRefValue);
 mesh.setFluxRequired(p.name());
 
+// Lookup parameters is transport properties
 
 Info<< "Reading Transport Properties... \n" << endl;
 IOdictionary transportProperties
@@ -61,4 +77,8 @@ dimensionedScalar nu
      transportProperties.lookup("nu")
  );
 
-
+Info<< "Reading Diffusion Constant D \n" << endl;
+dimensionedScalar D
+(
+     transportProperties.lookup("D")
+ );
