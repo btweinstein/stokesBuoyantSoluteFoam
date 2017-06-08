@@ -64,31 +64,28 @@ IOdictionary transportProperties
      )
 );
 
-
-Info<< "Reading dynamic viscosity mu \n" << endl;
-dimensionedScalar mu
+// Set nu_star and D_star...only one input parameter, Ra. 
+dimensionedScalar nu_star
 (
-     transportProperties.lookup("mu")
- );
+	"nu_star",
+	dimensionSet(0, 2, -1, 0, 0, 0, 0),
+	1.0,
+)
 
-Info<< "Reading kinematic viscosity nu \n" << endl;
-dimensionedScalar nu
+dimensionedScalar D_star
 (
-     transportProperties.lookup("nu")
- );
+	"D_star",
+	dimensionSet(0, 2, -1, 0, 0, 0, 0),
+	1.0,
+)
 
-Info<< "Reading Diffusion Constant D \n" << endl;
-dimensionedScalar D
-(
-     transportProperties.lookup("D")
- );
 
-Info<< "Reading Rayleigh Number Ra \n" << endl;
+Info<< "Reading Ra \n" << endl;
 dimensionedScalar Ra
 (
      transportProperties.lookup("Ra")
-);
+ );
 
 // Create the gravitational vector...presumably in the zhat direction
-// So be careful when defining your coordinate system (especially in 2d, make it x-z). 
+// So be careful when defining your coordinate system (especially in 2d, make it x-z, not x-y). 
 vector ghat (0.0,0.0,-1.0);

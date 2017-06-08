@@ -2,7 +2,9 @@
 
     tmp<fvVectorMatrix> tUEqn
     (
-	-fvm::laplacian(nu, U) == Ra*ghat*c
+	//Pay attention to signs...we need the negative 
+	// sign on the laplacian for whatever reason...
+	-fvm::laplacian(nu, U)
     );
 
     fvVectorMatrix& UEqn = tUEqn.ref();
@@ -11,5 +13,5 @@
 
     if (simple.momentumPredictor())
     {
-        solve(UEqn == -fvc::grad(p));
+        solve(UEqn == -fvc::grad(p) + Ra*ghat*c);
     }
