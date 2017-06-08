@@ -80,7 +80,7 @@ dimensionedScalar D_star
 );
 
 
-Info<< "Reading Ra \n" << endl;
+Info<< "Reading Ra \n" << endl; //Units of (L^4/T^2)*(1/Quantity)
 dimensionedScalar Ra
 (
      transportProperties.lookup("Ra")
