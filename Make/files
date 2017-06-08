@@ -1,0 +1,3 @@
+stokesFoam.C
+
+EXE = ~/git/stokesFoam/stokesFoam
