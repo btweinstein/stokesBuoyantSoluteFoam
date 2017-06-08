@@ -46,6 +46,8 @@ int main(int argc, char *argv[])
     #include "createFields.H"
     #include "initContinuityErrs.H"
 
+    #include "CourantNo.H"
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     Info<< "\nStarting time loop\n" << endl;
@@ -58,7 +60,7 @@ int main(int argc, char *argv[])
 	Ra*ghat*c
     );
 
-    while (simple.loop())
+    while (simple.loop()) // This needs to be separate from the usual time stepper. 
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
