@@ -13,7 +13,12 @@
 
     if (simple.momentumPredictor())
     {	
-        vector all_U_res = solve(UEqn == -fvc::grad(p)).initialResidual();
+        vector all_U_res = solve(
+	    UEqn 
+	    == 
+	    fvc::reconstruct((source - fvc::snGrad(p))*mesh.magSf())
+	).initialResidual();
+	// Get the maximum residual
 	U_res_init = all_U_res[0];
 	for(int i=1; i < all_U_res.size(); i++)
 	{

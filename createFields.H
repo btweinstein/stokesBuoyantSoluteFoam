@@ -91,6 +91,10 @@ dimensionedScalar Ra
 // (especially in 2d, make it x-z, not x-y). 
 vector ghat (0.0,0.0,-1.0);
 
+// The scalar, effectively g*z, required for doing some clever
+// numerical tricks.
+surfaceScalarField ghf("gh", ghat & mesh.Cf());
+
 // Read in the residuals for both U and P, because openfoam
 
 double p_converged, U_converged;

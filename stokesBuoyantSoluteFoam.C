@@ -53,10 +53,10 @@ int main(int argc, char *argv[])
 	// Now that the c-field is initialized, calculate the corresponding
 	// v-field.
 	
-	volVectorField source
+	surfaceVectorField source // Calculate the source due to devaitions from hydrostatics. 
 	(
 	    "source",
-	    Ra*ghat*c
+	    -ghf * Ra * fvc::snGrad(c)
 	);
 	
 	double U_res_init = 1;
