@@ -53,7 +53,33 @@ int main(int argc, char *argv[])
     while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
-        #include "CourantNo.H"
+        
+	// Now that the c-field is initialized, calculate the corresponding
+	// v-field.
+	
+	volVectorField source
+	(
+	    "source",
+	    Ra*ghat*c
+	);
+	
+	double U_res_init = 1;
+	double P_res_init = 1;
+
+	int nStokesIter = 0;
+	while((U_res_init > converged) || (P_res_init > converged))
+	{
+	    nStokesIter++;
+	    // --- Pressure-velocity SIMPLE corrector
+	    {
+		#include "UEqn.H"
+		#include "pEqn.H"
+	    }
+	}
+	
+	Info<< "Stokes solver converged in" << nStokesIter << "iterations." << nl << endl;
+	
+	#include "CourantNo.H"	
 
         while (simple.correctNonOrthogonal())
         {
@@ -68,26 +94,6 @@ int main(int argc, char *argv[])
             cEqn.solve();
         }
 
-	// Now that the c-field is updated, calculate the v-field
-	volVectorField source
-	(
-	    "source",
-	    Ra*ghat*c
-	);
-
-	double U_res_init = 1;
-	double P_res_init = 1;
-
-	while((U_res_init > converged) || (P_res_init > converged))
-	{
-	     // --- Pressure-velocity SIMPLE corrector
-	     {
-	         #include "UEqn.H"
-		 #include "pEqn.H"
-	     }
-             //Info << nl << "U_res_init:" << U_res_init  << endl;
-             //Info << "P_res_init:" << P_res_init << nl << endl;
-	}
 
         runTime.write();
 
