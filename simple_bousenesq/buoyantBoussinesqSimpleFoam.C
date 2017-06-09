@@ -22,15 +22,34 @@ License
     along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
 
 Application
-    simpleFoam
+    buoyantBoussinesqSimpleFoam
 
 Description
-    Steady-state solver for incompressible, turbulent flow, using the SIMPLE
-    algorithm.
+    Steady-state solver for buoyant, turbulent flow of incompressible fluids.
+
+    Uses the Boussinesq approximation:
+    \f[
+        rho_{k} = 1 - beta(T - T_{ref})
+    \f]
+
+    where:
+        \f$ rho_{k} \f$ = the effective (driving) density
+        beta = thermal expansion coefficient [1/K]
+        T = temperature [K]
+        \f$ T_{ref} \f$ = reference temperature [K]
+
+    Valid when:
+    \f[
+        \frac{beta(T - T_{ref})}{rho_{ref}} << 1
+    \f]
 
 \*---------------------------------------------------------------------------*/
 
 #include "fvCFD.H"
+#include "singlePhaseTransportModel.H"
+#include "turbulentTransportModel.H"
+#include "radiationModel.H"
+#include "fvOptions.H"
 #include "simpleControl.H"
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
@@ -44,56 +63,38 @@ int main(int argc, char *argv[])
     #include "createMesh.H"
     #include "createControl.H"
     #include "createFields.H"
+    #include "createFvOptions.H"
     #include "initContinuityErrs.H"
+
+    turbulence->validate();
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+    Info<< "\nStarting time loop\n" << endl;
 
     while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
-        
-	// Calculate the v-field given the c-field.	
-	volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
-		
-	double U_res_init = 1;
-	double P_res_init = 1;
-	
-	int nStokesIter = 0;
-	while((U_res_init > U_converged) || (P_res_init > p_converged))
-	{
-	    nStokesIter++;
-	    // --- Pressure-velocity SIMPLE corrector
-	    {
-		#include "UEqn.H"
-		#include "pEqn.H"
-	    }
-	}
-	
-	Info<< "Stokes solver converged in " << nStokesIter << " iterations." << nl << endl;
-	
-	#include "CourantNo.H"	
 
-        while (simple.correctNonOrthogonal())
+        // Pressure-velocity SIMPLE corrector
         {
-            fvScalarMatrix cEqn
-            (
-                fvm::ddt(c)
-              + fvm::div(phi, c)
-              - fvm::laplacian(D_star, c)
-            );
-
-            cEqn.relax();
-            cEqn.solve();
+            #include "UEqn.H"
+            #include "TEqn.H"
+            #include "pEqn.H"
         }
 
+        laminarTransport.correct();
+        turbulence->correct();
 
         runTime.write();
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-            << nl << endl;	
+            << nl << endl;
     }
 
     Info<< "End\n" << endl;
-    
+
     return 0;
 }
 

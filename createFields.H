@@ -1,9 +1,11 @@
-Info<< "Reading field p\n" << endl;
-volScalarField p
+//**** MAIN FIELDS ****
+
+Info<< "Reading field p_rgh\n" << endl;
+volScalarField p_rgh
 (
     IOobject
     (
-        "p",
+        "p_rgh",
         runTime.timeName(),
         mesh,
         IOobject::MUST_READ,
@@ -26,6 +28,8 @@ volVectorField U
     mesh
 );
 
+#include "createPhi.H"
+
 Info<< "Reading field c\n" << endl;
 volScalarField c
 (
@@ -40,16 +44,46 @@ volScalarField c
     mesh
 );
 
+//**** GRAVITY ****
 
-#include "createPhi.H"
+vector ghat (0.0,0.0,-1.0);
 
+volScalarField gh("gh", g & mesh.C())
+surfaceScalarField ghf("ghf", ghat & mesh.Cf());
+
+//**** PRESSURE (NEED GRAVITY FIRST ****
+
+volScalarField p // Need gravity in order to deal with P
+(
+    IOobject
+    (
+        "p",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    p_rgh + rhok*gh
+);
 
 label pRefCell = 0;
 scalar pRefValue = 0.0;
-setRefCell(p, simple.dict(), pRefCell, pRefValue);
+setRefCell(p, p_rgh, simple.dict(), pRefCell, pRefValue);
 mesh.setFluxRequired(p.name());
 
-// Lookup parameters is transport properties
+if (p_rgh.needReference())
+{
+    p += dimensionedScalar
+    (
+        "p",
+        p.dimensions(),
+        pRefValue - getRefCellValue(p, pRefCell)
+    );
+}
+
+mesh.setFluxRequired(p_rgh.name());
+
+//**** READING IN TRANSPORT PROPERTIES ****
 
 Info<< "Reading Transport Properties... \n" << endl;
 IOdictionary transportProperties
@@ -86,16 +120,7 @@ dimensionedScalar Ra
      transportProperties.lookup("Ra")
  );
 
-// Create the gravitational unit vector...presumably in the zhat direction
-// So be careful when defining your coordinate system 
-// (especially in 2d, make it x-z, not x-y). 
-vector ghat (0.0,0.0,-1.0);
-
-// The scalar, effectively g*z, required for doing some clever
-// numerical tricks.
-surfaceScalarField ghf("ghf", ghat & mesh.Cf());
-
-// Read in the residuals for both U and P, because openfoam
+//**** READ THE RESIDUALS, REQUIRED FOR LOOPING SIMPLEFOAM ****
 
 double p_converged, U_converged;
 

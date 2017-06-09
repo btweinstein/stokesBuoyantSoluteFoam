@@ -13,14 +13,14 @@
         fvc::flux(HbyA)
     );
 
-    fvc::makeRelative(phiHbyA, U);
+    MRF.makeRelative(phiHbyA);
 
     adjustPhi(phiHbyA, U, p_rgh);
 
     phiHbyA += phig;
 
     // Update the pressure BCs to ensure flux consistency
-    constrainPressure(p_rgh, U, phiHbyA, rAUf);
+    constrainPressure(p_rgh, U, phiHbyA, rAUf, MRF);
 
     while (simple.correctNonOrthogonal())
     {
@@ -45,6 +45,7 @@
             // calculated from the relaxed pressure
             U = HbyA + rAU*fvc::reconstruct((phig - p_rghEqn.flux())/rAUf);
             U.correctBoundaryConditions();
+            fvOptions.correct(U);
         }
     }
 

@@ -1,12 +1,20 @@
     // Solve the momentum equation
 
+    MRF.correctBoundaryVelocity(U);
+
     tmp<fvVectorMatrix> tUEqn
     (
-	-fvm::laplacian(nu_star, U)
+        fvm::div(phi, U)
+      + MRF.DDt(U)
+      + turbulence->divDevReff(U)
+     ==
+        fvOptions(U)
     );
     fvVectorMatrix& UEqn = tUEqn.ref();
 
     UEqn.relax();
+
+    fvOptions.constrain(UEqn);
 
     if (simple.momentumPredictor())
     {
@@ -17,9 +25,11 @@
             fvc::reconstruct
             (
                 (
-                  - ghf * fvc::snGrad(rho_k)
+                  - ghf*fvc::snGrad(rhok)
                   - fvc::snGrad(p_rgh)
                 )*mesh.magSf()
             )
         );
+
+        fvOptions.correct(U);
     }
