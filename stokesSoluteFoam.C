@@ -48,6 +48,8 @@ int main(int argc, char *argv[])
 
     #include "CourantNo.H"
 
+    double converged = 1E-5;
+
     while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
@@ -57,7 +59,7 @@ int main(int argc, char *argv[])
             fvScalarMatrix cEqn
             (
                 fvm::ddt(c)
-              + fvm::div(U, c)
+              + fvm::div(phi, c)
               - fvm::laplacian(D_star, c)
             );
 
@@ -72,7 +74,10 @@ int main(int argc, char *argv[])
 	    Ra*ghat*c
 	);
 
-	while(!simple.criteriaSatisfied())
+	double U_res_init = 1;
+	double P_res_init = 1;
+
+	while((U_res_init < converged) & (P_res_init < converged))
 	{
 	     // --- Pressure-velocity SIMPLE corrector
 	     {
@@ -81,31 +86,15 @@ int main(int argc, char *argv[])
 	     }
 	}
 
-
-        runTime.write();
-    }
-
-    
-
-    // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
-    Info<< "\nStarting time loop\n" << endl;
-
-
-    while (simple.loop()) // This needs to be separate from the usual time stepper. 
-    {
-        Info<< "Time = " << runTime.timeName() << nl << endl;
-
-
         runTime.write();
 
         Info<< "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
             << "  ClockTime = " << runTime.elapsedClockTime() << " s"
-            << nl << endl;
+            << nl << endl;	
     }
 
     Info<< "End\n" << endl;
-
+    
     return 0;
 }
 

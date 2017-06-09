@@ -30,7 +30,7 @@
 
         pEqn.setReference(pRefCell, pRefValue);
 
-        pEqn.solve();
+        P_res_init = pEqn.solve().initialResidual();
 
         if (simple.finalNonOrthogonalIter())
         {
