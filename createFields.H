@@ -92,22 +92,8 @@ dimensionedScalar Ra
 vector ghat (0.0,0.0,-1.0);
 
 // Read in the residuals for both U and P, because openfoam
-// is dumb and won't let me grab access to the protected members!
-
-Info<< "Reading residuals... \n" << endl;
-IOdictionary residualProperties
-(
-     IOobject
-     (
-        "residualProperties",
-        runTime.constant(),
-        mesh,
-        IOobject::MUST_READ_IF_MODIFIED,
-        IOobject::NO_WRITE
-     )
-);
 
 double p_converged, U_converged;
 
-residualProperties.lookup("p") >> p_converged;
-residualProperties.lookup("U") >> U_converged;
+mesh.solutionDict().subDict("residualControl").lookup("p") >> p_converged;
+mesh.solutionDict().subDict("residualControl").lookup("U") >> U_converged;
