@@ -46,13 +46,14 @@ int main(int argc, char *argv[])
     #include "createFields.H"
     #include "initContinuityErrs.H"
 
-    #include "CourantNo.H"
+    
 
     double converged = 1E-5;
 
     while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
+        #include "CourantNo.H"
 
         while (simple.correctNonOrthogonal())
         {
