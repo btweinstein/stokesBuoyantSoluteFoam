@@ -77,13 +77,15 @@ int main(int argc, char *argv[])
 	double U_res_init = 1;
 	double P_res_init = 1;
 
-	while((U_res_init < converged) & (P_res_init < converged))
+	while((U_res_init > converged) || (P_res_init > converged))
 	{
 	     // --- Pressure-velocity SIMPLE corrector
 	     {
 	         #include "UEqn.H"
 		 #include "pEqn.H"
 	     }
+             //Info << nl << "U_res_init:" << U_res_init  << endl;
+             //Info << "P_res_init:" << P_res_init << nl << endl;
 	}
 
         runTime.write();
