@@ -48,27 +48,54 @@ int main(int argc, char *argv[])
 
     #include "CourantNo.H"
 
+    while (simple.loop())
+    {
+        Info<< "Time = " << runTime.timeName() << nl << endl;
+
+        while (simple.correctNonOrthogonal())
+        {
+            fvScalarMatrix cEqn
+            (
+                fvm::ddt(c)
+              + fvm::div(U, c)
+              - fvm::laplacian(D_star, c)
+            );
+
+            cEqn.relax();
+            cEqn.solve();
+        }
+
+	// Now that the c-field is updated, calculate the v-field
+	volVectorField source
+	(
+	    "source",
+	    Ra*ghat*c
+	);
+
+	while(!simple.criteriaSatisfied())
+	{
+	     // --- Pressure-velocity SIMPLE corrector
+	     {
+	         #include "UEqn.H"
+		 #include "pEqn.H"
+	     }
+	}
+
+
+        runTime.write();
+    }
+
+    
+
     // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
     Info<< "\nStarting time loop\n" << endl;
 
-    // Setup the field corresponding the source *before* simple loop, 
-    // as it is constant in that.
-    volVectorField source
-    (
-	"source",
-	Ra*ghat*c
-    );
 
     while (simple.loop()) // This needs to be separate from the usual time stepper. 
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
 
-        // --- Pressure-velocity SIMPLE corrector
-        {
-            #include "UEqn.H"
-            #include "pEqn.H"
-        }
 
         runTime.write();
 
