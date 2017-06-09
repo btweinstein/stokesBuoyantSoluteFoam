@@ -44,45 +44,6 @@ volScalarField c
     mesh
 );
 
-//**** GRAVITY ****
-
-vector ghat (0.0,0.0,-1.0);
-
-volScalarField gh("gh", g & mesh.C())
-surfaceScalarField ghf("ghf", ghat & mesh.Cf());
-
-//**** PRESSURE (NEED GRAVITY FIRST ****
-
-volScalarField p // Need gravity in order to deal with P
-(
-    IOobject
-    (
-        "p",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::AUTO_WRITE
-    ),
-    p_rgh + rhok*gh
-);
-
-label pRefCell = 0;
-scalar pRefValue = 0.0;
-setRefCell(p, p_rgh, simple.dict(), pRefCell, pRefValue);
-mesh.setFluxRequired(p.name());
-
-if (p_rgh.needReference())
-{
-    p += dimensionedScalar
-    (
-        "p",
-        p.dimensions(),
-        pRefValue - getRefCellValue(p, pRefCell)
-    );
-}
-
-mesh.setFluxRequired(p_rgh.name());
-
 //**** READING IN TRANSPORT PROPERTIES ****
 
 Info<< "Reading Transport Properties... \n" << endl;
@@ -119,6 +80,58 @@ dimensionedScalar Ra
 (
      transportProperties.lookup("Ra")
  );
+
+//**** GRAVITY ****
+
+vector ghat (0.0,0.0,-1.0);
+
+volScalarField gh("gh", ghat & mesh.C())
+surfaceScalarField ghf("ghf", ghat & mesh.Cf());
+
+//**** PRESSURE (NEED GRAVITY FIRST ****
+
+
+volScalarField rhok(
+    IOobject
+    (
+      "rhok",
+     runTime.timeName(),
+     mesh
+    )
+    Ra*c
+); // For consistent notation with bousinesq
+
+
+volScalarField p // Need gravity in order to deal with P
+(
+    IOobject
+    (
+        "p",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::AUTO_WRITE
+    ),
+    p_rgh + rhok*gh
+);
+
+label pRefCell = 0;
+scalar pRefValue = 0.0;
+setRefCell(p, p_rgh, simple.dict(), pRefCell, pRefValue);
+mesh.setFluxRequired(p.name());
+
+if (p_rgh.needReference())
+{
+    p += dimensionedScalar
+    (
+        "p",
+        p.dimensions(),
+        pRefValue - getRefCellValue(p, pRefCell)
+    );
+}
+
+mesh.setFluxRequired(p_rgh.name());
+
 
 //**** READ THE RESIDUALS, REQUIRED FOR LOOPING SIMPLEFOAM ****
 

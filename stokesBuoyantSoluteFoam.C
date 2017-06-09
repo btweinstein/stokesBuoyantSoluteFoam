@@ -51,7 +51,6 @@ int main(int argc, char *argv[])
         Info<< "Time = " << runTime.timeName() << nl << endl;
         
 	// Calculate the v-field given the c-field.	
-	volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
 		
 	double U_res_init = 1;
 	double P_res_init = 1;
