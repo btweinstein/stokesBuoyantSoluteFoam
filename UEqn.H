@@ -17,7 +17,7 @@
             fvc::reconstruct
             (
                 (
-                  - ghf * fvc::snGrad(rho_k)
+                  - ghf * fvc::snGrad(rhok)
                   - fvc::snGrad(p_rgh)
                 )*mesh.magSf()
             )

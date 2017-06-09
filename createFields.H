@@ -85,7 +85,7 @@ dimensionedScalar Ra
 
 vector ghat (0.0,0.0,-1.0);
 
-volScalarField gh("gh", ghat & mesh.C())
+volScalarField gh("gh", ghat & mesh.C());
 surfaceScalarField ghf("ghf", ghat & mesh.Cf());
 
 //**** PRESSURE (NEED GRAVITY FIRST ****
@@ -97,7 +97,7 @@ volScalarField rhok(
       "rhok",
      runTime.timeName(),
      mesh
-    )
+    ),
     Ra*c
 ); // For consistent notation with bousinesq
 
