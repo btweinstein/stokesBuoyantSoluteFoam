@@ -4,7 +4,7 @@
     (
 	//Pay attention to signs...we need the negative 
 	// sign on the laplacian for whatever reason...
-	-fvm::laplacian(nu_star, U) == source
+	-fvm::laplacian(nu_star, U)
     );
 
     fvVectorMatrix& UEqn = tUEqn.ref();
@@ -16,7 +16,10 @@
         vector all_U_res = solve(
 	    UEqn 
 	    == 
-	    fvc::reconstruct((source - fvc::snGrad(p))*mesh.magSf())
+	    fvc::reconstruct((
+	      - Ra * ghf * fvc::snGrad(c) 
+	      - fvc::snGrad(p)
+	    )*mesh.magSf())
 	).initialResidual();
 	// Get the maximum residual
 	U_res_init = all_U_res[0];

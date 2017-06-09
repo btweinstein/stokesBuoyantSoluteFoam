@@ -93,7 +93,7 @@ vector ghat (0.0,0.0,-1.0);
 
 // The scalar, effectively g*z, required for doing some clever
 // numerical tricks.
-surfaceScalarField ghf("gh", ghat & mesh.Cf());
+surfaceScalarField ghf("ghf", ghat & mesh.Cf());
 
 // Read in the residuals for both U and P, because openfoam
 
