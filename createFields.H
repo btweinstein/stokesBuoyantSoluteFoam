@@ -95,5 +95,5 @@ vector ghat (0.0,0.0,-1.0);
 
 double p_converged, U_converged;
 
-mesh.solutionDict().subDict("residualControl").lookup("p") >> p_converged;
-mesh.solutionDict().subDict("residualControl").lookup("U") >> U_converged;
+mesh.solutionDict().subDict("SIMPLE").subDict("residualControl").lookup("p") >> p_converged;
+mesh.solutionDict().subDict("SIMPLE").subDict("residualControl").lookup("U") >> U_converged;
