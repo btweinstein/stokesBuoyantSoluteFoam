@@ -46,10 +46,6 @@ int main(int argc, char *argv[])
     #include "createFields.H"
     #include "initContinuityErrs.H"
 
-    
-
-    double converged = 1E-5;
-
     while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
@@ -65,9 +61,9 @@ int main(int argc, char *argv[])
 	
 	double U_res_init = 1;
 	double P_res_init = 1;
-
+	
 	int nStokesIter = 0;
-	while((U_res_init > converged) || (P_res_init > converged))
+	while((U_res_init > U_converged) || (P_res_init > p_converged))
 	{
 	    nStokesIter++;
 	    // --- Pressure-velocity SIMPLE corrector
