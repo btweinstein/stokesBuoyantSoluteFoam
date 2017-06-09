@@ -50,12 +50,8 @@ int main(int argc, char *argv[])
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
         
-	// Now that the c-field is initialized, calculate the corresponding
-	// v-field.
-	
-	// Calculate the source due to devaitions from hydrostatics. 
-	//surfaceVectorField source("source", Ra * ghf * fvc::snGrad(c));
-	
+	// Calculate the v-field given the c-field.
+		
 	double U_res_init = 1;
 	double P_res_init = 1;
 	
