@@ -2,7 +2,7 @@
     volScalarField rAU(1.0/UEqn.A());
     volVectorField HbyA(constrainHbyA(rAU*UEqn.H(), U, p));
     surfaceScalarField phiHbyA("phiHbyA", fvc::flux(HbyA));
-    fvc::makeRelative(phiHbyA, U); // 
+    fvc::makeRelative(phiHbyA, U);
     adjustPhi(phiHbyA, U, p);
 
     tmp<volScalarField> rAtU(rAU);
@@ -29,8 +29,8 @@
         );
 
         pEqn.setReference(pRefCell, pRefValue);
-
-        P_res_init = pEqn.solve().initialResidual();
+	
+	P_res_init = pEqn.solve().initialResidual();
 
         if (simple.finalNonOrthogonalIter())
         {

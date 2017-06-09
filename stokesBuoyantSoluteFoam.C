@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 	    }
 	}
 	
-	Info<< "Stokes solver converged in" << nStokesIter << "iterations." << nl << endl;
+	Info<< "Stokes solver converged in " << nStokesIter << " iterations." << nl << endl;
 	
 	#include "CourantNo.H"	
 
