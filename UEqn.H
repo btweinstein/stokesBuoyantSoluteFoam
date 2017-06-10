@@ -21,7 +21,7 @@
                   - fvc::snGrad(p_rgh)
                 )*mesh.magSf()
             )
-        );
+        ).initialResidual();
         U_res_init = all_U_res[0];
 	    for(int i=1; i < all_U_res.size(); i++)
 	    {

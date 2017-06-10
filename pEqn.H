@@ -31,7 +31,7 @@
 
         p_rghEqn.setReference(pRefCell, getRefCellValue(p_rgh, pRefCell));
 
-        P_res_init = p_rghEqn.solve();
+        P_res_init = p_rghEqn.solve().initialResidual();
 
         if (simple.finalNonOrthogonalIter())
         {
