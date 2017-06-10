@@ -129,5 +129,5 @@ mesh.setFluxRequired(p_rgh.name());
 
 double p_converged, U_converged;
 
-mesh.solutionDict().subDict("SIMPLE").subDict("residualControl").lookup("p") >> p_converged;
+mesh.solutionDict().subDict("SIMPLE").subDict("residualControl").lookup("p_rgh") >> p_converged;
 mesh.solutionDict().subDict("SIMPLE").subDict("residualControl").lookup("U") >> U_converged;
