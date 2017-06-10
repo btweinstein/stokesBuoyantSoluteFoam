@@ -2,3 +2,4 @@
 Make/linux*
 stokesSoluteFoam
 stokesBuoyantSoluteFoam
+.idea/
