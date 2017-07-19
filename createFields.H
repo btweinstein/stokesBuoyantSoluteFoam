@@ -81,13 +81,29 @@ dimensionedScalar Ra
      transportProperties.lookup("Ra")
 );
 
-Info<< "Reading G \n" << endl; //Units of (1/T), mass depletion rate
+Info<< "Reading field G \n" << endl; //Units of (1/T), mass depletion rate
 
-dimensionedScalar default_G("G", dimensionSet(0,0,-1,0,0,0,0), 1.0);
+dimensionedScalar default_G_constant("G", dimensionSet(0,0,-1,0,0,0,0), 0.0);
 
-dimensionedScalar G
+dimensionedScalar G_constant
 (
-     transportProperties.lookupOrAddDefault("G", default_G)
+     transportProperties.lookupOrAddDefault("G", default_G_constant)
+);
+
+// Create a field to avoid shennanigans with swak...hacky, but fine, and 
+// potentially more extendable in the future.
+volScalarField G
+(
+    IOobject
+    (
+        "G",
+        runTime.timeName(),
+        mesh,
+        IOobject::NO_READ,
+        IOobject::NO_WRITE
+    ),
+    mesh,
+    G_constant
 );
 
 //**** GRAVITY ****
