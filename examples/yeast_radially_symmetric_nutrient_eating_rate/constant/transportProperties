@@ -16,5 +16,3 @@ FoamFile
 
     materialName dimensionless;
     Ra Ra [0 4 -2 0 -1 0 0] 1000.;
-    G  G  [0 0 -1 0  0 0 0] 500.;
-    //Ra Ra [0 4 -2 0 -1 0 0] 0.; // to start
