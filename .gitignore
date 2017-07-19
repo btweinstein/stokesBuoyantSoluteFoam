@@ -3,3 +3,4 @@ Make/linux*
 stokesSoluteFoam
 stokesBuoyantSoluteFoam
 .idea/
+*.pyc

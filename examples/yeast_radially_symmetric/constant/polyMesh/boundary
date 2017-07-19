@@ -1,0 +1,59 @@
+/*--------------------------------------------------------------------*\
+|                                                                      |
+|    File exported from Salome Platform using SalomeToFoamExporter     |
+|                                                                      |
+\*--------------------------------------------------------------------*/
+FoamFile
+{
+	version		2.0;
+	format		ascii;
+	class		polyBoundaryMesh;
+	location	"constant/polyMesh";
+	object		boundary;
+}
+
+7
+(
+	left_sym
+	{
+	type		wedge;
+	nFaces		37062;
+	startFace	73531;
+	}
+	yeast_bottom
+	{
+	type		patch;
+	nFaces		100;
+	startFace	110593;
+	}
+	yeast_top
+	{
+	type		patch;
+	nFaces		100;
+	startFace	110693;
+	}
+	petri_bottom
+	{
+	type		patch;
+	nFaces		422;
+	startFace	110793;
+	}
+	petri_top
+	{
+	type		patch;
+	nFaces		422;
+	startFace	111215;
+	}
+	petri_outer
+	{
+	type		patch;
+	nFaces		71;
+	startFace	111637;
+	}
+	right_sym
+	{
+	type		wedge;
+	nFaces		37062;
+	startFace	111708;
+	}
+)
