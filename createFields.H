@@ -81,15 +81,6 @@ dimensionedScalar Ra
      transportProperties.lookup("Ra")
 );
 
-//Info<< "Reading field G \n" << endl; //Units of (1/T), mass depletion rate
-
-//dimensionedScalar default_G_constant("G", dimensionSet(0,0,-1,0,0,0,0), 0.0);
-
-dimensionedScalar G
-(
-     transportProperties.lookupOrAddDefault("G", default_G_constant)
-);
-
 //**** GRAVITY ****
 
 vector ghat (0.0,0.0,-1.0);
