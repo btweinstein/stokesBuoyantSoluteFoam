@@ -83,7 +83,7 @@ dimensionedScalar Ra
 
 Info<< "Reading G \n" << endl; //Units of (1/T), mass depletion rate
 
-dimensionedScalar default_G("G", dimensionSet(0,0,-1,0,0,0,0), 0.0);
+dimensionedScalar default_G("G", dimensionSet(0,0,-1,0,0,0,0), 1.0);
 
 dimensionedScalar G
 (
