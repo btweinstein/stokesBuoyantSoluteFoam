@@ -27,8 +27,8 @@ boundaryField
     yeast_top // The yeast absorb nutrients at a fixed (large) rate
     {
 	type		groovyBC;
-	fractionExpression 0; // We set the flux
-	valueExpression "400*c"; // Flux *into* the yeast
+	fractionExpression "0"; // We set the flux
+	gradientExpression "-400*c"; // Yeast absorb nutrients
 	value uniform 1.0; // Initially, c=1.0 everywhere. 
     }
     petri_top
