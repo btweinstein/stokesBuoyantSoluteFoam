@@ -50,27 +50,27 @@ int main(int argc, char *argv[])
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
         
-	// Calculate the v-field given the c-field.	
-		
-	double U_res_init = 1;
-	double P_res_init = 1;
-	
-	volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
-	
-	int nStokesIter = 0;
-	while((U_res_init > U_converged) || (P_res_init > p_converged))
-	{
-	    nStokesIter++;
-	    // --- Pressure-velocity SIMPLE corrector
-	    {
-		#include "UEqn.H"
-		#include "pEqn.H"
-	    }
-	}
-	
-	Info<< "Stokes solver converged in " << nStokesIter << " iterations." << nl << endl;
-	
-	#include "CourantNo.H"	
+        // Calculate the v-field given the c-field.
+
+        double U_res_init = 1;
+        double P_res_init = 1;
+
+        volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
+
+        int nStokesIter = 0;
+        while((U_res_init > U_converged) || (P_res_init > p_converged))
+        {
+            nStokesIter++;
+            // --- Pressure-velocity SIMPLE corrector
+            {
+            #include "UEqn.H"
+            #include "pEqn.H"
+            }
+        }
+
+        Info<< "Stokes solver converged in " << nStokesIter << " iterations." << nl << endl;
+
+        #include "CourantNo.H"
 
         while (simple.correctNonOrthogonal())
         {
@@ -84,7 +84,6 @@ int main(int argc, char *argv[])
             cEqn.relax();
             cEqn.solve();
         }
-
 
         runTime.write();
 

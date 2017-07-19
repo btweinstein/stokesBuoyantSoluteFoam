@@ -14,7 +14,7 @@ volScalarField p_rgh
     mesh
 );
 
-Info<< "Reading field U\n" << endl;
+Info << "Reading field U\n" << endl;
 volVectorField U
 (
     IOobject
@@ -79,7 +79,16 @@ Info<< "Reading Ra \n" << endl; //Units of (L^4/T^2)*(1/Quantity)
 dimensionedScalar Ra
 (
      transportProperties.lookup("Ra")
- );
+);
+
+Info<< "Reading G \n" << endl; //Units of (1/T), mass depletion rate
+
+dimensionedScalar default_G("G", dimensionSet(0,0,-1,0,0,0,0), 0.0);
+
+dimensionedScalar G
+(
+     transportProperties.lookupOrAddDefault("G", default_G)
+);
 
 //**** GRAVITY ****
 
@@ -88,7 +97,7 @@ vector ghat (0.0,0.0,-1.0);
 volScalarField gh("gh", ghat & mesh.C());
 surfaceScalarField ghf("ghf", ghat & mesh.Cf());
 
-//**** PRESSURE (NEED GRAVITY FIRST ****
+//**** PRESSURE (NEED GRAVITY FIRST) ****
 
 
 volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
