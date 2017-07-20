@@ -24,6 +24,7 @@ FoamFile
             U 1.0E-4;
             p_rgh 1.0E-4;
 	    c 0; // This way it never stops...only when we tell it to
+	    max_iter 300; // Stops attempting to calculate flow after this many iterations
         }
 
     }
@@ -36,26 +37,29 @@ FoamFile
             agglomerator faceAreaPair;
             mergeLevels 1;
             cacheAgglomeration true;
-            tolerance 1e-6;
+            tolerance 1e-10;
             relTol 0.00;
             smoother GaussSeidel;
+	    maxIter 10000;
 	}
 
         U
         {
             solver smoothSolver;
             smoother GaussSeidel;
-            tolerance 1e-6;
+            tolerance 1e-10;
             relTol 0;
             minIter 1;
+	    maxIter 10000;
         }
 
 	c
 	{
 	    solver          PBiCG;
 	    preconditioner  DILU;
-	    tolerance       1e-06;
+	    tolerance       1e-10;
 	    relTol          0;
+	    maxIter 10000;
 	}
 
 
