@@ -55,8 +55,6 @@ int main(int argc, char *argv[])
         double U_res_init = 1;
         double P_res_init = 1;
 
-        volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
-
         int nStokesIter = 0;
         while((U_res_init > U_converged) || (P_res_init > p_converged))
         {

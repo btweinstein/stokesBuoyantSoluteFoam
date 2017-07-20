@@ -37,8 +37,8 @@ FoamFile
             mergeLevels 1;
             cacheAgglomeration true;
             nCellsInCoarsestLevel 200;
-            tolerance 1e-7;
-            relTol 0.01;
+            tolerance 1e-6;
+            relTol 0.00;
             smoother GaussSeidel;
             nPreSweeps 0;
             nPostSweeps 2;
@@ -51,7 +51,7 @@ FoamFile
             solver smoothSolver;
             smoother GaussSeidel;
             tolerance 1e-6;
-            relTol 0.1;
+            relTol 0.0;
             minIter 1;
         }
 
