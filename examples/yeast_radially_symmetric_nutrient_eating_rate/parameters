@@ -10,7 +10,7 @@ FoamFile
     version 2.0;
     format ascii;
     class dictionary;
-    location constant;
+    location root;
     object parameters;
 }
 
@@ -19,5 +19,4 @@ Ra 1000;
 swakVariables (
 "G=400;"
 "Dstar=1;" // The diffusion constant is always set to 1 
-"dt=deltaT();"
 );
