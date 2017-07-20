@@ -91,17 +91,7 @@ surfaceScalarField ghf("ghf", ghat & mesh.Cf());
 //**** PRESSURE (NEED GRAVITY FIRST) ****
 
 
-volScalarField rhok(
-    IOobject
-    (
-        "rhok",
-        runTime.timeName(),
-        mesh,
-        IOobject::NO_READ,
-        IOobject::NO_WRITE
-    ),
-    Ra*c
-); // For consistent notation with bousinesq
+volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
 
 
 volScalarField p // Need gravity in order to deal with P

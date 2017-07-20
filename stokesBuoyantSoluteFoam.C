@@ -54,6 +54,8 @@ int main(int argc, char *argv[])
 
         double U_res_init = 1;
         double P_res_init = 1;
+	
+	rhok = Ra*c;
 
         int nStokesIter = 0;
         while((U_res_init > U_converged) || (P_res_init > p_converged))
