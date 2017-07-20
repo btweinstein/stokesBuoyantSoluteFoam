@@ -11,11 +11,11 @@ FoamFile
     format ascii;
     class dictionary;
     location constant;
-    object transportProperties;
+    object parameters;
 }
 
-#include "../parameters"
+Ra 1000;
 
-
-materialName dimensionless;
-Ra Ra [0 4 -2 0 -1 0 0] $Ra;
+swakVariables (
+"G=400;" 
+);
