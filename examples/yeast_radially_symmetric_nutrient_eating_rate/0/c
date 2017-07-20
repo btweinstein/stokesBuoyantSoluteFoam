@@ -30,12 +30,19 @@ boundaryField
     {
 	type		groovyBC;
 	fractionExpression "0"; // We set the flux
-	variables $swakVariables;
-	gradientExpression "-(G*c*deltaT())/(Dstar)"; // Yeast absorb nutrients
-	//gradientExpression "-(G*c)/(Dstar)"; // Yeast absorb nutrients
+	//variables $swakVariables;
+	//gradientExpression "-(G*c*deltaT())/(Dstar)"; // Yeast absorb nutrients
+	gradientExpression "5*c"; // Yeast absorb nutrients
 	value uniform 1.0; // Initially, c=1.0 everywhere. 
     }
     
+    /*
+    yeast_top
+    {
+	type fixedGradient;
+	gradient uniform -5;
+    }
+    */
     /*yeast_top
     {
 	type fixedValue;
