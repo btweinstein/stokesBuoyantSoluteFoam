@@ -30,7 +30,7 @@ boundaryField
 	type		groovyBC;
 	fractionExpression "0"; // We set the flux
 	variables $swakVariables;
-	gradientExpression "-G*c"; // Yeast absorb nutrients
+	gradientExpression "-(G*c*dt)/(Dstar)"; // Yeast absorb nutrients
 	value uniform 1.0; // Initially, c=1.0 everywhere. 
     }
     petri_top
