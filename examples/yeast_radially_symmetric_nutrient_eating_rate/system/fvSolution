@@ -21,8 +21,8 @@ FoamFile
         pRefValue 0;
         residualControl
         {
-            U 6.0E-3;
-            p_rgh 6.0E-3;
+            U 1.0E-4;
+            p_rgh 1.0E-4;
 	    c 0; // This way it never stops...only when we tell it to
         }
 
@@ -37,12 +37,8 @@ FoamFile
             mergeLevels 1;
             cacheAgglomeration true;
             tolerance 1e-6;
-            relTol 0.01;
+            relTol 0.00;
             smoother GaussSeidel;
-            nPreSweeps 0;
-            nPostSweeps 2;
-            nFinestSweeps 2;
-            minIter 1;
 	}
 
         U
