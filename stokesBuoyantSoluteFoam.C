@@ -57,18 +57,27 @@ int main(int argc, char *argv[])
 	
 	rhok = Ra*c;
 
-        int nStokesIter = 0;
-        while((U_res_init > U_converged) || (P_res_init > p_converged))
+        int num_stokes_iter = 0;
+	
+	bool res_condition = (U_res_init > U_converged) || (P_res_init > p_converged);
+	bool max_iter_cond = (num_stokes_iter < max_stokes_iter);
+		
+        while(res_condition and max_iter_cond)
         {
-            nStokesIter++;
             // --- Pressure-velocity SIMPLE corrector
             {
             #include "UEqn.H"
             #include "pEqn.H"
             }
+            num_stokes_iter++;
         }
-
-        Info<< "Stokes solver converged in " << nStokesIter << " iterations." << nl << endl;
+        
+        if(max_iter_cond){
+	    Info<< "Gave up on calculating the flow...calculated for " << num_stokes_iter << " iterations." << nl << endl;
+	}
+	else{
+	    Info<< "Stokes solver converged in " << num_stokes_iter << " iterations." << nl << endl;
+	}
 
         #include "CourantNo.H"
 

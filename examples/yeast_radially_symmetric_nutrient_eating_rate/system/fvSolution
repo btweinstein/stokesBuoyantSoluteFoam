@@ -21,10 +21,10 @@ FoamFile
         pRefValue 0;
         residualControl
         {
-            U 1.0E-4;
-            p_rgh 1.0E-4;
+            U 1.0E-3;
+            p_rgh 1.0E-3;
 	    c 0; // This way it never stops...only when we tell it to
-	    max_iter 300; // Stops attempting to calculate flow after this many iterations
+	    max_iter 50; // Stops attempting to calculate flow after this many iterations
         }
 
     }
@@ -40,7 +40,7 @@ FoamFile
             tolerance 1e-10;
             relTol 0.00;
             smoother GaussSeidel;
-	    maxIter 10000;
+	    maxIter 1000;
 	}
 
         U
@@ -50,7 +50,7 @@ FoamFile
             tolerance 1e-10;
             relTol 0;
             minIter 1;
-	    maxIter 10000;
+	    maxIter 1000;
         }
 
 	c
@@ -59,7 +59,7 @@ FoamFile
 	    preconditioner  DILU;
 	    tolerance       1e-10;
 	    relTol          0;
-	    maxIter 10000;
+	    maxIter 1000;
 	}
 
 

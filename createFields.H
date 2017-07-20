@@ -128,9 +128,9 @@ mesh.setFluxRequired(p_rgh.name());
 //**** READ THE RESIDUALS, REQUIRED FOR LOOPING SIMPLEFOAM ****
 
 double p_converged, U_converged;
-int max_iter;
+int max_stokes_iter;
 
 mesh.solutionDict().subDict("SIMPLE").subDict("residualControl").lookup("p_rgh") >> p_converged;
 mesh.solutionDict().subDict("SIMPLE").subDict("residualControl").lookup("U") >> U_converged;
-mesh.solutionDict().subDict("SIMPLE").subDict("residualControl").lookup("max_iter") >> max_iter;
+mesh.solutionDict().subDict("SIMPLE").subDict("residualControl").lookup("max_iter") >> max_stokes_iter;
 
