@@ -57,33 +57,36 @@ int main(int argc, char *argv[])
 	
     	rhok = Ra*c;
 
-        int num_stokes_iter = 0;
+        int stokes_iter = 0;
 
 	    // Force both conditions to true to ensure at least one iteration is attempted.
-	    bool res_condition = true;
-	    bool max_iter_cond = true;
+	    bool gt_res = true;
+	    bool lt_max_iter = true;
 		
-        while(res_condition && max_iter_cond)
+        while(gt_res && lt_max_iter)
         {
             // --- Pressure-velocity SIMPLE corrector
             {
                 #include "UEqn.H"
                 #include "pEqn.H"
             }
-            num_stokes_iter++;
+
+            Info << "Finished stokes iteration" << stokes_iter << endl;
+
+            stokes_iter++;
 
             // Recalculate the termination conditions
-            res_condition = (U_res_init > U_converged) || (P_res_init > p_converged);
-            max_iter_cond = (num_stokes_iter < max_stokes_iter);
+            gt_res = (U_res_init > U_converged) || (P_res_init > p_converged);
+            lt_max_iter = (stokes_iter < max_stokes_iter);
         }
         
-        if(!max_iter_cond) // i.e. ran out of iterations
+        if(!lt_max_iter) // i.e. ran out of iterations
         {
-	        Info<< "Gave up on calculating the flow...calculated for " << num_stokes_iter << " iterations." << nl << endl;
+	        Info<< "Gave up on calculating the flow...calculated for " << stokes_iter << " iterations." << nl << endl;
 	    }
 	    else
 	    {
-	        Info<< "Stokes solver converged in " << num_stokes_iter << " iterations." << nl << endl;
+	        Info<< "Stokes solver converged in " << stokes_iter << " iterations." << nl << endl;
 	    }
 
         #include "CourantNo.H"
