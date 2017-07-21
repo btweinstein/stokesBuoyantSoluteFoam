@@ -55,14 +55,14 @@ int main(int argc, char *argv[])
         double U_res_init = 1;
         double P_res_init = 1;
 	
-	rhok = Ra*c;
+    	rhok = Ra*c;
 
         int num_stokes_iter = 0;
 	
-	bool res_condition = (U_res_init > U_converged) || (P_res_init > p_converged);
-	bool max_iter_cond = (num_stokes_iter < max_stokes_iter);
+	    bool res_condition = (U_res_init > U_converged) || (P_res_init > p_converged);
+	    bool max_iter_cond = (num_stokes_iter < max_stokes_iter);
 		
-        while(res_condition and max_iter_cond)
+        while(res_condition && max_iter_cond)
         {
             // --- Pressure-velocity SIMPLE corrector
             {
@@ -70,6 +70,10 @@ int main(int argc, char *argv[])
             #include "pEqn.H"
             }
             num_stokes_iter++;
+
+            // Recalculate the termination conditions
+            res_condition = (U_res_init > U_converged) || (P_res_init > p_converged);
+            max_iter_cond = (num_stokes_iter < max_stokes_iter);
         }
         
         if(max_iter_cond){
