@@ -21,8 +21,8 @@ FoamFile
         pRefValue 0;
         residualControl
         {
-            U 3.0E-3;
-            p_rgh 3.0E-3;
+            U 1.0E-3;
+            p_rgh 1.0E-3;
 	        c 0; // This way it never stops...only when we tell it to
 	        max_iter 200;
         }
@@ -37,7 +37,7 @@ FoamFile
             agglomerator faceAreaPair;
             mergeLevels 1;
             cacheAgglomeration true;
-            tolerance 1e-6;
+            tolerance 1e-10;
             relTol 0.00;
             smoother GaussSeidel;
 	}
@@ -46,7 +46,7 @@ FoamFile
         {
             solver smoothSolver;
             smoother GaussSeidel;
-            tolerance 1e-6;
+            tolerance 1e-10;
             relTol 0;
             minIter 1;
         }
@@ -55,7 +55,7 @@ FoamFile
 	{
 	    solver          PBiCG;
 	    preconditioner  DILU;
-	    tolerance       1e-06;
+	    tolerance       1e-10;
 	    relTol          0;
 	}
 
