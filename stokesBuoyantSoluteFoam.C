@@ -77,14 +77,14 @@ int main(int argc, char *argv[])
 
             // Recalculate the termination conditions
             gt_res = (U_res_init > U_converged) || (P_res_init > p_converged);
-            lt_max_iter = (stokes_iter < max_stokes_iter);
+            lt_max_iter = (stokes_iter <= max_stokes_iter);
         }
         
         if(!lt_max_iter) // i.e. ran out of iterations
         {
 	        Info<< "Ran for maximum number of stokes iterations." << endl;
 	    }
-	    Info<< "Stokes solver converged in " << stokes_iter << " iterations." << nl << endl;
+	    Info<< "Stokes solver converged in " << stokes_iter - 1 << " iterations." << nl << endl;
 
         #include "CourantNo.H"
 

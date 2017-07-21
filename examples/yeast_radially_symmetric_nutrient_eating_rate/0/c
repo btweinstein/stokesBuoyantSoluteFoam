@@ -28,18 +28,18 @@ boundaryField
     
     yeast_top // The yeast absorb nutrients at a fixed (large) rate
     {
-	type		groovyBC;
-	fractionExpression "0"; // We set the flux
-	variables $swakVariables;
-	gradientExpression "-(G*c*deltaT())/(Dstar)"; // Yeast absorb nutrients
-	value uniform 1.0; // Initially, c=1.0 everywhere. 
+    type    groovyBC;
+    fractionExpression "0"; // We set the flux
+    variables $swakVariables;
+    gradientExpression "-(G*c*deltaT())/(Dstar)"; // Yeast absorb nutrients
+    value uniform 1.0; // Initially, c=1.0 everywhere.
     }
     
     /*
     yeast_top
     {
-	type fixedGradient;
-	gradient uniform -5;
+    type fixedGradient;
+    gradient uniform -5;
     }
     */
     /*yeast_top
