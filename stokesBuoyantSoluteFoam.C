@@ -58,9 +58,10 @@ int main(int argc, char *argv[])
     	rhok = Ra*c;
 
         int num_stokes_iter = 0;
-	
-	    bool res_condition = (U_res_init > U_converged) || (P_res_init > p_converged);
-	    bool max_iter_cond = (num_stokes_iter < max_stokes_iter);
+
+	    // Force both conditions to true to ensure at least one iteration is attempted.
+	    bool res_condition = true;
+	    bool max_iter_cond = true;
 		
         while(res_condition && max_iter_cond)
         {
