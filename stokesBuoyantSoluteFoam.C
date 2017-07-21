@@ -78,11 +78,11 @@ int main(int argc, char *argv[])
         }
         
         if(max_iter_cond){
-	    Info<< "Gave up on calculating the flow...calculated for " << num_stokes_iter << " iterations." << nl << endl;
-	}
-	else{
-	    Info<< "Stokes solver converged in " << num_stokes_iter << " iterations." << nl << endl;
-	}
+	        Info<< "Gave up on calculating the flow...calculated for " << num_stokes_iter << " iterations." << nl << endl;
+	    }
+	    else{
+	        Info<< "Stokes solver converged in " << num_stokes_iter << " iterations." << nl << endl;
+	    }
 
         #include "CourantNo.H"
 
