@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
         {
             // --- Pressure-velocity SIMPLE corrector
             {
-            #include "UEqn.H"
-            #include "pEqn.H"
+                #include "UEqn.H"
+                #include "pEqn.H"
             }
             num_stokes_iter++;
 
@@ -77,10 +77,12 @@ int main(int argc, char *argv[])
             max_iter_cond = (num_stokes_iter < max_stokes_iter);
         }
         
-        if(max_iter_cond){
+        if(!max_iter_cond) // i.e. ran out of iterations
+        {
 	        Info<< "Gave up on calculating the flow...calculated for " << num_stokes_iter << " iterations." << nl << endl;
 	    }
-	    else{
+	    else
+	    {
 	        Info<< "Stokes solver converged in " << num_stokes_iter << " iterations." << nl << endl;
 	    }
 

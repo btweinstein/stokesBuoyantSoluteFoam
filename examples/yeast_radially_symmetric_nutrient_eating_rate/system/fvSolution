@@ -21,8 +21,8 @@ FoamFile
         pRefValue 0;
         residualControl
         {
-            U 1.0E-3;
-            p_rgh 1.0E-3;
+            U 1.0E-4;
+            p_rgh 1.0E-4;
 	        c 0; // This way it never stops...only when we tell it to
 	        max_iter 200; // Maximum number of iterations attempted before giving up on calculating the flow field
         }
@@ -72,7 +72,7 @@ FoamFile
         equations
         {
             U 0.7;
-	    c 0.7;
+	        c 0.7;
         }
 
     }
