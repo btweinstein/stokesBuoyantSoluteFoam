@@ -21,9 +21,10 @@ FoamFile
         pRefValue 0;
         residualControl
         {
-            U 1.0E-4;
-            p_rgh 1.0E-4;
-	    c 0; // This way it never stops...only when we tell it to
+            U 3.0E-3;
+            p_rgh 3.0E-3;
+	        c 0; // This way it never stops...only when we tell it to
+	        max_iter 200;
         }
 
     }
