@@ -21,8 +21,8 @@ FoamFile
         pRefValue 0;
         residualControl
         {
-            U 1.0E-4;
-            p_rgh 1.0E-4;
+            U 1.0E-3;
+            p_rgh 1.0E-3;
 	        c 0; // This way it never stops...only when we tell it to
 	        max_iter 200; // Maximum number of iterations attempted before giving up on calculating the flow field
         }
@@ -37,25 +37,24 @@ FoamFile
             agglomerator faceAreaPair;
             mergeLevels 1;
             cacheAgglomeration true;
-            tolerance 1e-10;
+            tolerance 1e-6;
             relTol 0.00;
             smoother GaussSeidel;
 	}
 
-        U
-        {
-            solver smoothSolver;
-            smoother GaussSeidel;
-            tolerance 1e-10;
-            relTol 0;
-            minIter 1;
-        }
+    U
+    {
+        solver smoothSolver;
+        smoother GaussSeidel;
+        tolerance 1e-8;
+        relTol 0;
+    }
 
 	c
 	{
 	    solver          PBiCG;
 	    preconditioner  DILU;
-	    tolerance       1e-10;
+	    tolerance       1e-6;
 	    relTol          0;
 	}
 

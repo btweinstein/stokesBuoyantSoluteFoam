@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
                 #include "pEqn.H"
             }
 
-            Info << "Finished stokes iteration" << stokes_iter << endl;
+            Info << "Finished stokes iteration " << stokes_iter << endl;
 
             stokes_iter++;
 
@@ -82,12 +82,9 @@ int main(int argc, char *argv[])
         
         if(!lt_max_iter) // i.e. ran out of iterations
         {
-	        Info<< "Gave up on calculating the flow...calculated for " << stokes_iter << " iterations." << nl << endl;
+	        Info<< "Ran for maximum number of stokes iterations." << endl;
 	    }
-	    else
-	    {
-	        Info<< "Stokes solver converged in " << stokes_iter << " iterations." << nl << endl;
-	    }
+	    Info<< "Stokes solver converged in " << stokes_iter << " iterations." << nl << endl;
 
         #include "CourantNo.H"
 
