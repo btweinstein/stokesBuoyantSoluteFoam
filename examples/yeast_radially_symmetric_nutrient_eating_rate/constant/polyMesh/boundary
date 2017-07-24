@@ -16,44 +16,44 @@ FoamFile
 (
 	left_sym
 	{
-	type		wedge;
-	nFaces		37062;
-	startFace	73531;
+	type		patch;
+	nFaces		49608;
+	startFace	98745;
 	}
 	yeast_bottom
 	{
 	type		patch;
 	nFaces		100;
-	startFace	110593;
+	startFace	148353;
 	}
 	yeast_top
 	{
 	type		patch;
 	nFaces		100;
-	startFace	110693;
+	startFace	148453;
 	}
 	petri_bottom
 	{
 	type		patch;
-	nFaces		422;
-	startFace	110793;
+	nFaces		212;
+	startFace	148553;
 	}
 	petri_top
 	{
 	type		patch;
-	nFaces		422;
-	startFace	111215;
+	nFaces		212;
+	startFace	148765;
 	}
 	petri_outer
 	{
 	type		patch;
-	nFaces		71;
-	startFace	111637;
+	nFaces		159;
+	startFace	148977;
 	}
 	right_sym
 	{
-	type		wedge;
-	nFaces		37062;
-	startFace	111708;
+	type		patch;
+	nFaces		49608;
+	startFace	149136;
 	}
 )
