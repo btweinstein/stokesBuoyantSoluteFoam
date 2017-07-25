@@ -1,0 +1,77 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       o          |                                                          |
+|    o     o       | HELYX-OS                                                  |
+|   o   O   o      | Version: v2.4.0                                           |
+|    o     o       | Web:     http://www.engys.com                            |
+|       o          |                                                          |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version 2.0;
+    format ascii;
+    class dictionary;
+    location system;
+    object fvSolution;
+}
+
+    SIMPLE
+    {
+        nNonOrthogonalCorrectors 3;
+        pRefCell 0;
+        pRefValue 0;
+        residualControl
+        {
+            U 1.0E-3;
+            p_rgh 1.0E-3;
+	        c 0; // This way it never stops...only when we tell it to
+	        max_iter 200; // Maximum number of iterations attempted before giving up on calculating the flow field
+        }
+
+    }
+
+    solvers
+    {
+	p_rgh
+	{
+            solver GAMG;
+            agglomerator faceAreaPair;
+            mergeLevels 1;
+            cacheAgglomeration true;
+            tolerance 1e-6;
+            relTol 0.00;
+            smoother GaussSeidel;
+	}
+
+    U
+    {
+        solver smoothSolver;
+        smoother GaussSeidel;
+        tolerance 1e-8;
+        relTol 0;
+    }
+
+	c
+	{
+	    solver          PBiCG;
+	    preconditioner  DILU;
+	    tolerance       1e-6;
+	    relTol          0;
+	}
+
+
+    }
+
+    relaxationFactors
+    {
+        fields
+        {
+            p_rgh 0.3;
+        }
+
+        equations
+        {
+            U 0.7;
+	        c 0.7;
+        }
+
+    }
