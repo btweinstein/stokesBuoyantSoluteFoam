@@ -45,11 +45,12 @@ int main(int argc, char *argv[])
     #include "createControl.H"
     #include "createFields.H"
     #include "initContinuityErrs.H"
-
+  
     while (simple.loop())
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
-        
+        //Make sure the deltaT increment on c is reasonable...
+        Info<< "deltaT:" << c.mesh().time().deltaT() << nl << endl;
         // Calculate the v-field given the c-field.
 
         double U_res_init = 1;
