@@ -51,7 +51,21 @@ int main(int argc, char *argv[])
         Info<< "Time = " << runTime.timeName() << nl << endl;
         //Make sure the deltaT increment on c is reasonable...
         Info << "deltaT: " << c.mesh().time().deltaT() << nl << endl;
-        // Calculate the v-field given the c-field.
+
+        //*** Calculate the concentration field ***
+
+        while (simple.correctNonOrthogonal())
+        {
+            fvScalarMatrix cEqn
+            (
+                fvm::ddt(c)
+              + fvm::div(phi, c)
+              - fvm::laplacian(D_star, c)
+            );
+            cEqn.solve();
+        }
+
+        //*** Calculate the velocity field***
 
         double U_res_init = 1;
         double P_res_init = 1;
@@ -88,17 +102,6 @@ int main(int argc, char *argv[])
 	    Info<< "Stokes solver converged in " << stokes_iter - 1 << " iterations." << nl << endl;
 
         #include "CourantNo.H"
-
-        while (simple.correctNonOrthogonal())
-        {
-            fvScalarMatrix cEqn
-            (
-                fvm::ddt(c)
-              + fvm::div(phi, c)
-              - fvm::laplacian(D_star, c)
-            );
-            cEqn.solve();
-        }
 
         runTime.write();
 

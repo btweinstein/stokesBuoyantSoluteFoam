@@ -38,7 +38,7 @@ FoamFile
             mergeLevels 1;
             cacheAgglomeration true;
             tolerance 1e-6;
-            relTol 0.00;
+            relTol 0.001;
             smoother GaussSeidel;
 	}
 
@@ -47,7 +47,7 @@ FoamFile
         solver smoothSolver;
         smoother GaussSeidel;
         tolerance 1e-8;
-        relTol 0;
+        relTol 0.001;
     }
 
 	c
@@ -55,7 +55,7 @@ FoamFile
 	    solver          PBiCG;
 	    preconditioner  DILU;
 	    tolerance       1e-6;
-	    relTol          0;
+	    relTol          0.001;
 	}
 
 
