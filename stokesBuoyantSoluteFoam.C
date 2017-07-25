@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     {
         Info<< "Time = " << runTime.timeName() << nl << endl;
         //Make sure the deltaT increment on c is reasonable...
-        Info<< "deltaT:" << c.mesh().time().deltaT() << nl << endl;
+        Info << "deltaT: " << c.mesh().time().deltaT() << nl << endl;
         // Calculate the v-field given the c-field.
 
         double U_res_init = 1;
@@ -97,8 +97,6 @@ int main(int argc, char *argv[])
               + fvm::div(phi, c)
               - fvm::laplacian(D_star, c)
             );
-
-            cEqn.relax();
             cEqn.solve();
         }
 
