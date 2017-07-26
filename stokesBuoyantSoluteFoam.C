@@ -46,8 +46,10 @@ int main(int argc, char *argv[])
     #include "createFields.H"
     #include "initContinuityErrs.H"
   
-    while (simple.loop())
+    while (runTime.run())
     {
+        runTime++;
+
         Info<< "Time = " << runTime.timeName() << nl << endl;
         //Make sure the deltaT increment on c is reasonable...
         Info << "deltaT: " << c.mesh().time().deltaT() << nl << endl;
@@ -80,6 +82,9 @@ int main(int argc, char *argv[])
 		
         while(gt_res && lt_max_iter)
         {
+            U.storePrevIter();
+            p_rgh.storePrevIter();
+
             // --- Pressure-velocity SIMPLE corrector
             {
                 #include "UEqn.H"
