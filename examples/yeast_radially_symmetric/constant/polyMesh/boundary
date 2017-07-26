@@ -22,19 +22,19 @@ FoamFile
 	}
 	yeast_bottom
 	{
-	type		patch;
+	type		wall;
 	nFaces		100;
 	startFace	110593;
 	}
 	yeast_top
 	{
-	type		patch;
+	type		wall;
 	nFaces		100;
 	startFace	110693;
 	}
 	petri_bottom
 	{
-	type		patch;
+	type		wall;
 	nFaces		422;
 	startFace	110793;
 	}
@@ -46,7 +46,7 @@ FoamFile
 	}
 	petri_outer
 	{
-	type		patch;
+	type		wall;
 	nFaces		71;
 	startFace	111637;
 	}

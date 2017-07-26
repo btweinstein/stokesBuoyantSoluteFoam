@@ -1,9 +1,9 @@
-*~
+**/*~
 Make/linux*
 stokesSoluteFoam
 stokesBuoyantSoluteFoam
 .idea/
-*.pyc
-*log.txt
-*PyFoam*
-*.OpenFOAM*
+**.pyc
+**log.txt
+**PyFoam*
+**.OpenFOAM*

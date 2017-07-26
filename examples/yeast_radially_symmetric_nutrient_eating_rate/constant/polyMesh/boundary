@@ -40,7 +40,7 @@ FoamFile
 	}
 	petri_top
 	{
-	type		wall;
+	type		patch;
 	nFaces		212;
 	startFace	148765;
 	}

@@ -82,7 +82,6 @@ int main(int argc, char *argv[])
 		
         while(gt_res && lt_max_iter)
         {
-            U.storePrevIter();
             p_rgh.storePrevIter();
 
             // --- Pressure-velocity SIMPLE corrector
