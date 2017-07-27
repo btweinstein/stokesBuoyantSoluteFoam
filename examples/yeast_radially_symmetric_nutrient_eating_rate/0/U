@@ -23,33 +23,33 @@ boundaryField
 {
     petri_bottom
     {
-        type            noSlip;
+        type        noSlip;
     }
     petri_top 
     {
-	type 		slip; 
-	// Free interface, except where the yeast are
-	// No flux in z, but flow allowed in x & y.
+	    type 		slip;
+    	// Free interface, except where the yeast are
+    	// No flux in z, but flow allowed in x & y.
     }
     yeast_bottom
     {
-	type 		noSlip;
+	    type 		noSlip;
     }
     yeast_top
     {
-	type 		noSlip;
+	    type 		noSlip;
     }
     petri_outer
     {
-        type            noSlip;
+        type        noSlip;
     }
     left_sym
     {
-	type 		wedge;
+	    type 		wedge;
     }
     right_sym
     {
-	type 		wedge;
+	    type 		wedge;
     }
 }
 

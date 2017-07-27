@@ -28,7 +28,7 @@ boundaryField
     }
     yeast_top
     {
-	type            fixedFluxPressure;
+	    type            fixedFluxPressure;
         rho             rhok;
         value           uniform 0;
     }
