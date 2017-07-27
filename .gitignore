@@ -7,3 +7,5 @@ stokesBuoyantSoluteFoam
 **log.txt
 **PyFoam*
 **.OpenFOAM*
+**Gnuplotting*
+**.foam
