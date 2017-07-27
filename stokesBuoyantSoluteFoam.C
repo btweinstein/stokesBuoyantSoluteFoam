@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
                 #include "pEqn.H"
             }
 
-            Info << "Finished stokes iteration " << stokes_iter << endl;
+            Info << "Finished stokes iteration " << stokes_iter << nl << endl;
 
             stokes_iter++;
 

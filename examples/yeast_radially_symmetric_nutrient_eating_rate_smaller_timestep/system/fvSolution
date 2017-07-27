@@ -19,6 +19,7 @@ SIMPLE
     nNonOrthogonalCorrectors 0; // Our mesh is orthogonal
     pRefCell 0;
     pRefValue 0;
+    momentumPredictor on;
     residualControl
     {
         U 1.0E-4;
@@ -37,16 +38,19 @@ solvers
             mergeLevels 1;
             cacheAgglomeration true;
             tolerance 1e-7;
-            relTol 0;
+            relTol 1e-4;
             smoother GaussSeidel;
     }
 
     U
     {
-        solver smoothSolver;
-        smoother GaussSeidel;
+        solver GAMG;
+        agglomerator faceAreaPair;
+        mergeLevels 1;
+        cacheAgglomeration true;
         tolerance 1e-7;
         relTol 0;
+        smoother GaussSeidel;
     }
 
     c

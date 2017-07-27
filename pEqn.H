@@ -22,6 +22,8 @@
     // Update the pressure BCs to ensure flux consistency
     constrainPressure(p_rgh, U, phiHbyA, rAUf);
 
+    bool firstPass = true;
+
     while (simple.correctNonOrthogonal())
     {
         fvScalarMatrix p_rghEqn
@@ -31,7 +33,15 @@
 
         p_rghEqn.setReference(pRefCell, getRefCellValue(p_rgh, pRefCell));
 
-        P_res_init = p_rghEqn.solve().initialResidual();
+        if (firstPass)
+        {
+            P_res_init = p_rghEqn.solve().initialResidual();
+            firstPass = false;
+        }
+        else
+        {
+            p_rghEqn.solve();
+        }
 
         if (simple.finalNonOrthogonalIter())
         {
