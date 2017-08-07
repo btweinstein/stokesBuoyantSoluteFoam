@@ -56,8 +56,6 @@ int main(int argc, char *argv[])
         runTime++;
 
         Info<< "Time = " << runTime.timeName() << nl << endl;
-        //Make sure the deltaT increment on c is reasonable...
-        Info << "deltaT: " << c.mesh().time().deltaT() << nl << endl;
 
         //*** Calculate the concentration field ***
 
