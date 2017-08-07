@@ -22,7 +22,7 @@ SIMPLE
     momentumPredictor on;
     residualControl
     {
-        U 5.0E-5;
+        U 5.0E-6;
         p_rgh 5.0E-5;
         max_iter 500; // Maximum number of iterations attempted before giving up on calculating the flow field
     }

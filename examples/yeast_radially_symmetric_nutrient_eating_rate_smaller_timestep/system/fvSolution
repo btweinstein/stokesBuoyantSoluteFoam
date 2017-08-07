@@ -16,15 +16,15 @@ FoamFile
 
 SIMPLE
 {
-    nNonOrthogonalCorrectors 0; // Our mesh is orthogonal
+    nNonOrthogonalCorrectors 0; // Our mesh is orthogonal.
     pRefCell 0;
     pRefValue 0;
     momentumPredictor on;
     residualControl
     {
-        U 1.0E-4;
-        p_rgh 1.0E-4;
-        max_iter 300; // Maximum number of iterations attempted before giving up on calculating the flow field
+        U 6.0E-5;
+        p_rgh 5.0E-5;
+        max_iter 500; // Maximum number of iterations attempted before giving up on calculating the flow field
     }
 
 }
@@ -33,13 +33,13 @@ solvers
 {
     p_rgh
     {
-            solver GAMG;
-            agglomerator faceAreaPair;
-            mergeLevels 1;
-            cacheAgglomeration true;
-            tolerance 1e-7;
-            relTol 1e-4;
-            smoother GaussSeidel;
+        solver GAMG;
+        agglomerator faceAreaPair;
+        mergeLevels 1;
+        cacheAgglomeration true;
+        tolerance 1e-8;
+        relTol 0.01;
+        smoother GaussSeidel;
     }
 
     U
@@ -48,8 +48,8 @@ solvers
         agglomerator faceAreaPair;
         mergeLevels 1;
         cacheAgglomeration true;
-        tolerance 1e-7;
-        relTol 0;
+        tolerance 1e-10;
+        relTol 0.1;
         smoother GaussSeidel;
     }
 
@@ -57,22 +57,21 @@ solvers
     {
         solver          PBiCG;
         preconditioner  DILU;
-        tolerance       1e-7;
+        tolerance       1e-8;
         relTol          0;
     }
 }
 
-relaxationFactors
+relaxationFactors // Same used in other examples
 {
     fields
     {
-        p_rgh 0.3;
+        p_rgh 0.7;
     }
 
     equations
     {
-        U 0.7;
-        c 0.7;
+        U 0.3;
     }
 
 }
