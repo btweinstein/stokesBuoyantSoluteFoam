@@ -43,11 +43,16 @@ int main(int argc, char *argv[])
     #include "createTime.H"
     #include "createMesh.H"
     #include "createControl.H"
+    #include "createTimeControls.H"
     #include "createFields.H"
     #include "initContinuityErrs.H"
   
     while (runTime.run())
     {
+        #include "readTimeControls.H"
+        #include "CourantNo.H"
+        #include "setDeltaT.H"
+
         runTime++;
 
         Info<< "Time = " << runTime.timeName() << nl << endl;
@@ -104,8 +109,6 @@ int main(int argc, char *argv[])
 	        Info<< "Ran for maximum number of stokes iterations." << endl;
 	    }
 	    Info<< "Stokes solver converged in " << stokes_iter - 1 << " iterations." << nl << endl;
-
-        #include "CourantNo.H"
 
         runTime.write();
 
