@@ -10,3 +10,4 @@ stokesBuoyantSoluteFoam
 **Gnuplotting*
 **.foam
 .ipynb_checkpoints/
+*.*/
