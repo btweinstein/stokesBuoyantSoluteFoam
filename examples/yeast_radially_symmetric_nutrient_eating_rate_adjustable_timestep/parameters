@@ -17,6 +17,6 @@ FoamFile
 Ra 1000;
 
 swakVariables (
-"G=400;"
+"G=10;"
 "Dstar=1;" // The diffusion constant is always set to 1 
 );
