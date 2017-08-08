@@ -25,11 +25,11 @@ FoamFile
     writeInterval 0.01;
     //***
     purgeWrite 0;
-    writeFormat ascii;
-    writePrecision 17;
+    writeFormat binary;
+    writePrecision 6;
     writeCompression uncompressed;
     timeFormat general;
-    timePrecision 17;
+    timePrecision 6;
     graphFormat raw;
     runTimeModifiable true;
 
