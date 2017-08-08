@@ -27,9 +27,8 @@ boundaryField
     }
     petri_top 
     {
-	type 		slip; 
-	// Free interface, except where the yeast are
-	// No flux in z, but flow allowed in x & y.
+	type 		noSlip; 
+	// The yeast are covered with a plate
     }
     yeast_bottom
     {

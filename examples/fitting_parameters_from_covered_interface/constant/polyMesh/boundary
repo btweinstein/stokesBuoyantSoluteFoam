@@ -19,7 +19,7 @@ FoamFile
 (
     left_sym
     {
-        type            patch;
+        type            wedge;
         nFaces          61200;
         startFace       121688;
     }
@@ -55,7 +55,7 @@ FoamFile
     }
     right_sym
     {
-        type            patch;
+        type            wedge;
         nFaces          61200;
         startFace       184212;
     }

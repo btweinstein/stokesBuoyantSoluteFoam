@@ -14,8 +14,8 @@ FoamFile
     object parameters;
 }
 
-Ra 1000;
+Ra 35e3;
 
 swakVariables (
-"G=1.0;"
+"G=0.1;"
 );

@@ -56,7 +56,7 @@ boundaryField
     }
     left_sym
     {
-	type		 wedge;
+	type		wedge;
     }
 }
 
