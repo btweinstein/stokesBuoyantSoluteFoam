@@ -22,13 +22,13 @@ from salome.smesh import smeshBuilder
 
 class Yeast_Wedge(object):
     def __init__(self):
-        self.petri_radius = 6.25
+        self.petri_radius = 3.0
         self.petri_height = 1.0
         self.yeast_radius = 0.3125
         self.base_mesh_spacing = 0.025
         self.wedge_angle = 2.5
 
-        self.yeast_mesh_spacing = self.yeast_radius/100.
+        self.yeast_mesh_spacing = self.yeast_radius/25.
 
         salome.salome_init()
         self.theStudy = salome.myStudy
