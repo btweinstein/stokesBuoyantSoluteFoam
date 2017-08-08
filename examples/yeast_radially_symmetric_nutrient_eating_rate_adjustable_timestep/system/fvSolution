@@ -71,7 +71,7 @@ relaxationFactors // Same used in other examples
 
     equations
     {
-        U 0.9;
+        U 0.7;
     }
 
 }
