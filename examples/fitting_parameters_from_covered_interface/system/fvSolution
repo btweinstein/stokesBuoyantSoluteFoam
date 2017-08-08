@@ -22,9 +22,9 @@ SIMPLE
     momentumPredictor on;
     residualControl
     {
-        U 1.0E-4;
+        U 1.0E-3;
         p_rgh 1.0E-5;
-        max_iter 1500; // Maximum number of iterations attempted to calculate flow field
+        max_iter 750; // Maximum number of iterations attempted to calculate flow field
 	ignore_direction 1; // Ignore the Uy residual, as Uy = 0 in the radial simulation
     }
 
