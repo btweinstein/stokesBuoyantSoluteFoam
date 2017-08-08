@@ -26,7 +26,7 @@ FoamFile
     //***
     purgeWrite 0;
     writeFormat binary;
-    writePrecision 6;
+    writePrecision 16;
     writeCompression uncompressed;
     timeFormat general;
     timePrecision 6;

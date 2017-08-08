@@ -1,0 +1,88 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : 5.0-dbb428a3a855
+Exec   : checkMesh
+Date   : Aug 08 2017
+Time   : 14:04:30
+Host   : "superchomp"
+PID    : 10499
+I/O    : uncollated
+Case   : /home/bryan/git/stokesBuoyantSoluteFoam/examples/yeast_radially_symmetric_nutrient_eating_rate_adjustable_timestep
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 10)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Create polyMesh for time = 0
+
+Time = 0
+
+Mesh stats
+    points:           60903
+    internal points:  0
+    faces:            120701
+    internal faces:   59799
+    cells:            30100
+    faces per cell:   5.996677740863787
+    boundary patches: 7
+    point zones:      0
+    face zones:       0
+    cell zones:       0
+
+Overall number of cells of each type:
+    hexahedra:     30000
+    prisms:        100
+    wedges:        0
+    pyramids:      0
+    tet wedges:    0
+    tetrahedra:    0
+    polyhedra:     0
+
+Checking topology...
+    Boundary definition OK.
+    Cell to face addressing OK.
+    Point usage OK.
+    Upper triangular ordering OK.
+    Face vertices OK.
+    Number of regions: 1 (OK).
+
+Checking patch topology for multiply connected surfaces...
+    Patch               Faces    Points   Surface topology                  
+    left_sym            30100    30502    ok (non-closed singly connected)  
+    yeast_bottom        32       65       ok (non-closed singly connected)  
+    yeast_top           32       65       ok (non-closed singly connected)  
+    petri_bottom        269      540      ok (non-closed singly connected)  
+    petri_top           269      540      ok (non-closed singly connected)  
+    petri_outer         100      202      ok (non-closed singly connected)  
+    right_sym           30100    30502    ok (non-closed singly connected)  
+
+Checking geometry...
+    Overall domain bounding box (0 -0.06544465510368339 0) (2.999286081239728 0.06544465510368336 1)
+    Mesh has 2 geometric (non-empty/wedge) directions (1 0 1)
+    Mesh has 3 solution (non-empty) directions (1 1 1)
+    Wedge left_sym with angle 1.249999998770531 degrees
+    Wedge right_sym with angle 1.249999998770531 degrees
+    All edges aligned with or perpendicular to non-empty directions.
+    Boundary openness (4.331326007088189e-15 -1.746051349225376e-15 -2.85696995265806e-17) OK.
+    Max cell openness = 3.256840298450587e-16 OK.
+    Max aspect ratio = 2.048487484548516 OK.
+    Minimum face area = 2.079934471384528e-06. Maximum face area = 0.001308893102073669.  Face area magnitudes OK.
+    Min volume = 2.079934471384664e-08. Max volume = 1.305188549631619e-05.  Total volume = 0.1962872431440126.  Cell volumes OK.
+    Mesh non-orthogonality Max: 0 average: 0
+    Non-orthogonality check OK.
+    Face pyramids OK.
+    Max skewness = 0.3326988143879052 OK.
+    Coupled point location match (average 0) OK.
+
+Mesh OK.
+
+End
+

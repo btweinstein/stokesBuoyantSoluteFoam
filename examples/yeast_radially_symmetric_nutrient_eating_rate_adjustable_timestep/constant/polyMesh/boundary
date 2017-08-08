@@ -1,59 +1,64 @@
-/*--------------------------------------------------------------------*\
-|                                                                      |
-|    File exported from Salome Platform using SalomeToFoamExporter     |
-|                                                                      |
-\*--------------------------------------------------------------------*/
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
 FoamFile
 {
-	version		2.0;
-	format		ascii;
-	class		polyBoundaryMesh;
-	location	"constant/polyMesh";
-	object		boundary;
+    version     2.0;
+    format      binary;
+    class       polyBoundaryMesh;
+    location    "constant/polyMesh";
+    object      boundary;
 }
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 7
 (
-	left_sym
-	{
-	type		wedge;
-	nFaces		30100;
-	startFace	59799;
-	}
-	yeast_bottom
-	{
-	type		patch;
-	nFaces		32;
-	startFace	89899;
-	}
-	yeast_top
-	{
-	type		patch;
-	nFaces		32;
-	startFace	89931;
-	}
-	petri_bottom
-	{
-	type		patch;
-	nFaces		269;
-	startFace	89963;
-	}
-	petri_top
-	{
-	type		patch;
-	nFaces		269;
-	startFace	90232;
-	}
-	petri_outer
-	{
-	type		patch;
-	nFaces		100;
-	startFace	90501;
-	}
-	right_sym
-	{
-	type		wedge;
-	nFaces		30100;
-	startFace	90601;
-	}
+    left_sym
+    {
+        type            wedge;
+        nFaces          30100;
+        startFace       59799;
+    }
+    yeast_bottom
+    {
+        type            patch;
+        nFaces          32;
+        startFace       89899;
+    }
+    yeast_top
+    {
+        type            patch;
+        nFaces          32;
+        startFace       89931;
+    }
+    petri_bottom
+    {
+        type            patch;
+        nFaces          269;
+        startFace       89963;
+    }
+    petri_top
+    {
+        type            patch;
+        nFaces          269;
+        startFace       90232;
+    }
+    petri_outer
+    {
+        type            patch;
+        nFaces          100;
+        startFace       90501;
+    }
+    right_sym
+    {
+        type            wedge;
+        nFaces          30100;
+        startFace       90601;
+    }
 )
+
+// ************************************************************************* //
