@@ -26,10 +26,10 @@ FoamFile
     //***
     purgeWrite 0;
     writeFormat ascii;
-    writePrecision 6;
+    writePrecision 17;
     writeCompression uncompressed;
     timeFormat general;
-    timePrecision 6;
+    timePrecision 17;
     graphFormat raw;
     runTimeModifiable true;
 

@@ -25,7 +25,7 @@ boundaryField
     {
         type            zeroGradient;
     }
-    
+   
     yeast_top // The yeast absorb nutrients at a fixed (large) rate
     {
     type    groovyBC;
