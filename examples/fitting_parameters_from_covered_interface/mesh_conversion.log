@@ -1,0 +1,82 @@
+/*---------------------------------------------------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+Build  : 5.0-dbb428a3a855
+Exec   : ideasUnvToFoam domain_partitioned_mesh.unv
+Date   : Aug 08 2017
+Time   : 18:31:48
+Host   : "superchomp"
+PID    : 31201
+I/O    : uncollated
+Case   : /home/bryan/git/stokesBuoyantSoluteFoam/examples/fitting_parameters_from_covered_interface
+nProcs : 1
+sigFpe : Enabling floating point exception trapping (FOAM_SIGFPE).
+fileModificationChecking : Monitoring run-time modified files using timeStampMaster (fileModificationSkew 10)
+allowSystemOperations : Allowing user-supplied system call operations
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+Create time
+
+Processing tag:164
+Starting reading units at line 3.
+l:1
+units:"  SI: Meter (newton)"
+unitType:2
+Unit factors:
+    Length scale       : 1
+    Force scale        : 1
+    Temperature scale  : 1
+    Temperature offset : 273.15
+
+
+Processing tag:2420
+Skipping tag 2420 on line 9
+Skipping section at line 9.
+
+Processing tag:2411
+Starting reading points at line 20.
+Read 123725 points.
+
+Processing tag:2412
+Starting reading cells at line 247473.
+First occurrence of element type 11 for cell 1 at line 247474
+First occurrence of element type 44 for cell 1425 at line 441154
+First occurrence of element type 41 for cell 62625 at line 563554
+First occurrence of element type 112 for cell 63949 at line 688602
+First occurrence of element type 115 for cell 63950 at line 688604
+Read 61200 cells and 123724 boundary faces.
+
+Processing tag:2467
+Starting reading patches at line 811004.
+For group 7 named left_sym trying to read 61200 patch face indices.
+For group 10 named yeast_bottom trying to read 46 patch face indices.
+For group 12 named yeast_top trying to read 46 patch face indices.
+For group 14 named petri_bottom trying to read 566 patch face indices.
+For group 16 named petri_top trying to read 566 patch face indices.
+For group 18 named petri_outer trying to read 100 patch face indices.
+For group 21 named right_sym trying to read 61200 patch face indices.
+
+Sorting boundary faces according to group (patch)
+0: left_sym is patch
+1: yeast_bottom is patch
+2: yeast_top is patch
+3: petri_bottom is patch
+4: petri_top is patch
+5: petri_outer is patch
+6: right_sym is patch
+
+Constructing mesh with non-default patches of size:
+    left_sym	61200
+    yeast_bottom	46
+    yeast_top	46
+    petri_bottom	566
+    petri_top	566
+    petri_outer	100
+    right_sym	61200
+
+End
+

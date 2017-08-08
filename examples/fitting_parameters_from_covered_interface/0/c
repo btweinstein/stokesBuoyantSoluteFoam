@@ -1,0 +1,76 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.1                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    location    "0";
+    object      c;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 -3 0 0 1 0 0];
+internalField   uniform 1.0; //There are nutrients everywhere at first
+#include "../parameters"
+
+boundaryField
+{
+    petri_outer
+    {
+        type            zeroGradient;
+    }
+   
+    yeast_top // The yeast absorb nutrients at a fixed (large) rate
+    {
+    type    groovyBC;
+    fractionExpression "0"; // We set the flux
+    variables $swakVariables;
+    gradientExpression "-G"; // Yeast absorb nutrients
+    value uniform 1.0; // Initially, c=1.0 everywhere.
+    }
+
+    /*
+    yeast_top
+    {
+    type fixedGradient;
+    gradient uniform -5;
+    }
+    */
+    /*
+    yeast_top
+    {
+	type fixedValue;
+	value uniform 0;
+    }
+    */
+    
+    petri_top
+    {
+	type 		zeroGradient;
+    }
+    petri_bottom
+    {
+        type            zeroGradient;
+    }
+    yeast_bottom
+    {
+        type            zeroGradient;
+    }
+    left_sym
+    {
+	type		wedge;
+    }
+    right_sym
+    {
+	type 		wedge;
+    }
+}
+
+
+// ************************************************************************* //

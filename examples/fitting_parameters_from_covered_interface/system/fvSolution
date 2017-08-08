@@ -1,0 +1,78 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       o          |                                                          |
+|    o     o       | HELYX-OS                                                  |
+|   o   O   o      | Version: v2.4.0                                           |
+|    o     o       | Web:     http://www.engys.com                            |
+|       o          |                                                          |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+	version 2.0;
+	format ascii;
+	class dictionary;
+	location system;
+	object fvSolution;
+}
+
+SIMPLE
+{
+    nNonOrthogonalCorrectors 0; // Our mesh is orthogonal.
+    pRefCell 0;
+    pRefValue 0;
+    momentumPredictor on;
+    residualControl
+    {
+        U 1.0E-4;
+        p_rgh 1.0E-5;
+        max_iter 1500; // Maximum number of iterations attempted to calculate flow field
+	ignore_direction 1; // Ignore the Uy residual, as Uy = 0 in the radial simulation
+    }
+
+}
+
+solvers
+{
+    p_rgh
+    {
+        solver GAMG;
+        agglomerator faceAreaPair;
+        mergeLevels 1;
+        cacheAgglomeration true;
+        tolerance 1e-8;
+        relTol 0.01;
+        smoother GaussSeidel;
+    }
+
+    U
+    {
+        solver GAMG;
+        agglomerator faceAreaPair;
+        mergeLevels 1;
+        cacheAgglomeration true;
+        tolerance 1e-8;
+        relTol 0.1;
+        smoother GaussSeidel;
+    }
+
+    c
+    {
+        solver          PBiCG;
+        preconditioner  DILU;
+        tolerance       1e-8;
+        relTol          0;
+    }
+}
+
+relaxationFactors // Same used in other examples
+{
+    fields
+    {
+        p_rgh 0.3;
+    }
+
+    equations
+    {
+        U 0.7;
+    }
+
+}
