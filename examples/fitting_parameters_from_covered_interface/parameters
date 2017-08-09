@@ -17,5 +17,5 @@ FoamFile
 Ra 35e3;
 
 swakVariables (
-"G=0.1;"
+"G=10.;"
 );
