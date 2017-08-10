@@ -79,11 +79,12 @@ int main(int argc, char *argv[])
 
         int stokes_iter = 0;
 
-	    // Force both conditions to true to ensure at least one iteration is attempted.
-	    bool gt_res = true;
-	    bool lt_max_iter = true;
+	    // Conditions to continue looping
+	    bool gt_res = true; // Greater than residual cutoffs
+	    bool lt_max_iter = true; // Less than maximum iteration
+	    bool lt_min_iter = true; // Less than minimum iteration
 		
-        while(gt_res && lt_max_iter)
+        while((gt_res && lt_max_iter) || lt_min_iter)
         {
             p_rgh.storePrevIter();
 
@@ -100,6 +101,7 @@ int main(int argc, char *argv[])
             // Recalculate the termination conditions
             gt_res = (U_res_init > U_converged) || (P_res_init > p_converged);
             lt_max_iter = (stokes_iter <= max_stokes_iter);
+            lt_min_iter = (stokes_iter <= min_stokes_iter);
         }
         
         if(!lt_max_iter) // i.e. ran out of iterations

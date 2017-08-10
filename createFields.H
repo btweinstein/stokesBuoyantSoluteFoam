@@ -127,20 +127,27 @@ mesh.setFluxRequired(p_rgh.name());
 
 //**** READ THE RESIDUALS, REQUIRED FOR LOOPING SIMPLEFOAM ****
 
-double p_converged, U_converged;
+
+int min_stokes_iter;
 int max_stokes_iter;
 //Ignoring the residual of U in a certain direction is often required for axisymmetric simulations
 int ignore_direction = -1; // 0: ignore x residual, 1: ignore y, 2: ignore z, -1: use U residual in every direction
 
-dictionary res_control = mesh.solutionDict().subDict("SIMPLE").subDict("residualControl");
+dictionary simple_dict = mesh.solutionDict().subDict("SIMPLE");
 
-res_control.lookup("p_rgh") >> p_converged;
-res_control.lookup("U") >> U_converged;
-res_control.lookup("max_iter") >> max_stokes_iter;
-ignore_direction = res_control.lookupOrDefault("ignore_direction", -1);
+simple_dict.lookup("min_iter") >> min_stokes_iter;
+simple_dict.lookup("max_iter") >> max_stokes_iter;
+ignore_direction = simple_dict.lookupOrDefault("ignore_direction", -1);
 
 if(ignore_direction != -1){
     if (ignore_direction == 0) Info << "Ignoring Ux residual... \n" << endl;
     if (ignore_direction == 1) Info << "Ignoring Uy residual... \n" << endl;
     if (ignore_direction == 2) Info << "Ignoring Uz residual... \n" << endl;
 }
+
+dictionary res_dict = simple_dict.subDict("residualControl");
+
+double p_converged, U_converged;
+
+res_dict.lookup("p_rgh") >> p_converged;
+res_dict.lookup("U") >> U_converged;
