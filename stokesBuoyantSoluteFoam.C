@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
         double U_res_init = 1;
         double P_res_init = 1;
 	
-    	rhok = Ra*c;
+    	volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
 
         int stokes_iter = 0;
 
@@ -95,6 +95,9 @@ int main(int argc, char *argv[])
                 #include "UEqn.H"
                 #include "pEqn.H"
             }
+
+            laminarTransport.correct();
+            turbulence->correct();
 
             Info << "Finished stokes iteration " << stokes_iter << nl << endl;
 

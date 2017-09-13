@@ -45,18 +45,19 @@ volScalarField c
 //**** READING IN TRANSPORT PROPERTIES ****
 
 #include "createPhi.H"
-#include "readTransportProperties.H" // mu *must* be set to one.
+
+singlePhaseTransportModel laminarTransport(U, phi);
+
+dimensionedScalar Ra(
+    "Ra",
+    dimensionSet(0, 4, -2, 0, -1, 0, 0),
+    laminarTransport
+);
 
 Info<< "Creating turbulence model\n" << endl;
 autoPtr<incompressible::turbulenceModel> turbulence
 (
     incompressible::turbulenceModel::New(U, phi, laminarTransport)
-);
-
-Info<< "Reading Ra \n" << endl; //Units of (L^4/T^2)*(1/Quantity)
-dimensionedScalar Ra
-(
-     transportProperties.lookup("Ra")
 );
 
 dimensionedScalar D_star
@@ -73,11 +74,9 @@ dimensionedScalar D_star
 #include "readhRef.H"
 #include "gh.H"
 
-//**** PRESSURE (NEED GRAVITY FIRST) ****
-
-
 volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
 
+//**** PRESSURE (NEED GRAVITY FIRST) ****
 
 volScalarField p // Need gravity in order to deal with P
 (

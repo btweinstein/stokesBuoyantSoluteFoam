@@ -33,3 +33,4 @@
 	        }
 	    }
     }
+    else U_res_init = 0.0;
