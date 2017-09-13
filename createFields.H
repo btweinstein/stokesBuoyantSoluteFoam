@@ -69,9 +69,23 @@ dimensionedScalar D_star
 
 //**** GRAVITY ****
 
-#include "readGravitationalAcceleration.H"
-#include "readhRef.H"
-#include "gh.H"
+// In my implementation, gh and ghf are dimensionless! Bad things happen if you don't do this.
+Info<< "\nReading direction of gravity" << endl;
+IOdictionary ghat_dict
+(
+    IOobject
+    (
+        "ghat",
+        runTime.constant(),
+        mesh,
+        IOobject::MUST_READ,
+        IOobject::NO_WRITE
+    )
+);
+vector ghat = ghat_dict.lookup("ghat");
+
+volScalarField gh("gh", ghat & mesh.C());
+surfaceScalarField ghf("ghf", ghat & mesh.Cf());
 
 volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
 
