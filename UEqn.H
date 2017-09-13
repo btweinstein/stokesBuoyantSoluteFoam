@@ -2,12 +2,14 @@
 
     tmp<fvVectorMatrix> tUEqn
     (
-	-fvm::laplacian(nu_star, U)
+	    turbulence->divDevReff(U) // MUST BE LAMINAR
     );
     fvVectorMatrix& UEqn = tUEqn.ref();
 
     UEqn.relax();
 
+    //TODO: Is this always necessary? Will my solution *not* converge if this is
+    // not used?
     if (simple.momentumPredictor())
     {
         vector all_U_res = solve

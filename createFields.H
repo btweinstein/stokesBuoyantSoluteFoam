@@ -28,8 +28,6 @@ volVectorField U
     mesh
 );
 
-#include "createPhi.H"
-
 Info<< "Reading field c\n" << endl;
 volScalarField c
 (
@@ -46,25 +44,19 @@ volScalarField c
 
 //**** READING IN TRANSPORT PROPERTIES ****
 
-Info << "Reading Transport Properties... \n" << endl;
-IOdictionary transportProperties
+#include "createPhi.H"
+#include "readTransportProperties.H" // mu *must* be set to one.
+
+Info<< "Creating turbulence model\n" << endl;
+autoPtr<incompressible::turbulenceModel> turbulence
 (
-     IOobject
-     (
-        "transportProperties",
-        runTime.constant(),
-        mesh,
-        IOobject::MUST_READ_IF_MODIFIED,
-        IOobject::NO_WRITE
-     )
+    incompressible::turbulenceModel::New(U, phi, laminarTransport)
 );
 
-// Set nu_star and D_star...only one input parameter, Ra. 
-dimensionedScalar nu_star
+Info<< "Reading Ra \n" << endl; //Units of (L^4/T^2)*(1/Quantity)
+dimensionedScalar Ra
 (
-	"nu_star",
-	dimensionSet(0, 2, -1, 0, 0, 0, 0),
-	1.0
+     transportProperties.lookup("Ra")
 );
 
 dimensionedScalar D_star
@@ -75,18 +67,11 @@ dimensionedScalar D_star
 );
 
 
-Info<< "Reading Ra \n" << endl; //Units of (L^4/T^2)*(1/Quantity)
-dimensionedScalar Ra
-(
-     transportProperties.lookup("Ra")
-);
-
 //**** GRAVITY ****
 
-vector ghat (0.0,0.0,-1.0);
-
-volScalarField gh("gh", ghat & mesh.C());
-surfaceScalarField ghf("ghf", ghat & mesh.Cf());
+#include "readGravitationalAcceleration.H"
+#include "readhRef.H"
+#include "gh.H"
 
 //**** PRESSURE (NEED GRAVITY FIRST) ****
 
