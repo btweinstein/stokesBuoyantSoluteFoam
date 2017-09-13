@@ -67,7 +67,6 @@ dimensionedScalar D_star
 	1.0
 );
 
-
 //**** GRAVITY ****
 
 #include "readGravitationalAcceleration.H"
@@ -77,6 +76,8 @@ dimensionedScalar D_star
 volScalarField rhok("rhok", Ra*c); // For consistent notation with bousinesq
 
 //**** PRESSURE (NEED GRAVITY FIRST) ****
+
+Info << "Creating pressure fields...\n" << endl;
 
 volScalarField p // Need gravity in order to deal with P
 (
