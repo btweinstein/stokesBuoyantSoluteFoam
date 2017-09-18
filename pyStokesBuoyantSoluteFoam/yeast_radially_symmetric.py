@@ -56,6 +56,6 @@ class Simulation(object):
                          '-setnumber', 'r_yeast', str(r_yeast),
                          '-setnumber', 'r_petri', str(r_petri),
                          '-setnumber', 'slice_angle', str(slice_angle),
-                         'yeast_choosing_params.geo',
+                         'yeast_radially_symmetric.geo',
                          '-o', str(mesh_name) + '.msh']
                         )
