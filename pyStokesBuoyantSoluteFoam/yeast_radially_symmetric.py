@@ -1,5 +1,12 @@
 import pint # For easy units
 import subprocess
+import numpy as np
+import os
+
+# Get path to *this* file. Necessary when applying gmsh to the packaged geometry
+full_path = os.path.realpath(__file__)
+file_dir = os.path.dirname(full_path)
+parent_dir = os.path.dirname(file_dir)
 
 # Define constants
 
@@ -56,6 +63,6 @@ class Simulation(object):
                          '-setnumber', 'r_yeast', str(r_yeast),
                          '-setnumber', 'r_petri', str(r_petri),
                          '-setnumber', 'slice_angle', str(slice_angle),
-                         'yeast_radially_symmetric.geo',
-                         '-o', str(mesh_name) + '.msh']
+                         file_dir + '/yeast_radially_symmetric.geo',
+                         '-o', str(mesh_name)]
                         )
