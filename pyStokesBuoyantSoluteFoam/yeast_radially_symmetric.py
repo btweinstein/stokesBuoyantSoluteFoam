@@ -34,11 +34,17 @@ beta = delta_rho /rho_f # Has units...but dimensionless when multiplied by c, wh
 # With that said, there are a couple of constants we can hand-wavily define for my use.
 
 rho_yeast = 1.1029 * ureg.g/ureg.mL # From the yeast size measurement paper
+
 r_single_yeast = 2.5 * ureg.um # From the yeast size measurement paper
+
 t_yeast = 90*ureg.minute # Yeast generation time estimation while fermenting
+
 A_single_yeast_projection = (np.pi*r_single_yeast**2).to(ureg.um**2)
+
 V_single_yeast = ((4./3.)*np.pi*r_single_yeast**3).to(ureg.um**3)
+
 m_single_yeast = (rho_yeast * V_single_yeast).to(ureg.pg)
+
 # Therefore, our best estimate of the mass flux is...
 j_m_single_yeast = (m_single_yeast / (A_single_yeast_projection * t_yeast)).to(ureg.pg/(ureg.hour * ureg.um**2))
 
@@ -70,7 +76,8 @@ class Simulation(object):
         self.nd_r_petri = (r_petri / self.Lc).to_base_units()
 
         # Get G based on the input parameters
-        self.G = (self.h*self.j_m_colony)/(rho_0*beta)
+        self.G = (self.h*self.j_m_colony)/(D*rho_0*beta)
+        self.G.ito(ureg.dimensionless)
 
     def create_gmsh(self, mesh_name, mesh_size=0.1, slice_angle=2.5):
         lc = mesh_size

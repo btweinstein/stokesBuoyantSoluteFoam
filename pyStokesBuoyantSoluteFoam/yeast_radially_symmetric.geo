@@ -65,11 +65,11 @@ Coherence;
 Physical Volume("internal") = surf_vector[1];
 
 // NO SPACES ALLOWED, OR EVERYTHING GETS FUCKED UP
-Physical Surface("left_wedge") = surf_vector[0];
-Physical Surface("right_wedge") = {domain_surf};
+Physical Surface("left_sym") = surf_vector[0];
+Physical Surface("right_sym") = {domain_surf};
 Physical Surface("yeast_top") = surf_vector[2];
-Physical Surface("top_petri") =  surf_vector[3];
-Physical Surface("petri_edge") = surf_vector[4];
-Physical Surface("bottom_petri") = surf_vector[5];
+Physical Surface("petri_top") =  surf_vector[3];
+Physical Surface("petri_outer") = surf_vector[4];
+Physical Surface("petri_bottom") = surf_vector[5];
 Physical Surface("yeast_bottom") = surf_vector[6];
 
