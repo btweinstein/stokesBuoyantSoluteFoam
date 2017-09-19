@@ -214,3 +214,8 @@ class Simulation(object):
         # Pickle this class so that we know what precise parameters were used.
         with open(self.sim_path + '/' + self.sim_basename +'.pkl', 'wb') as fi:
             pkl.dump(self.__dict__, fi)
+
+    def run_simulation(self):
+        subprocess.call(['stokesBuoyantSoluteFoam',
+                         '-case', self.sim_path,
+                         '&>', self.sim_path + '/log.txt'])
