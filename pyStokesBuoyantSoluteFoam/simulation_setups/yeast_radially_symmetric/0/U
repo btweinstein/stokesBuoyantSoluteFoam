@@ -27,8 +27,7 @@ boundaryField
     }
     petri_top 
     {
-	type 		slip; 
-	// A free interface
+	type 		slip;
     }
     yeast_bottom
     {

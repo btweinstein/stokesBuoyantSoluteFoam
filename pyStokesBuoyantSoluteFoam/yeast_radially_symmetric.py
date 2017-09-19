@@ -167,12 +167,12 @@ class Simulation(object):
 
             # Update concentration fields...
             if yeast_position is 'top':
-                c_dict['boundaryField']['yeast_top']['type'] = nutrient_absorbing_bc
-                c_dict['boundaryField']['yeast_bottom']['type'] = 'zeroGradient'
+                c_dict['boundaryField']['yeast_top'] = nutrient_absorbing_bc
+                c_dict['boundaryField']['yeast_bottom'] = {'type': 'zeroGradient'}
 
             elif yeast_position is 'bottom':
-                c_dict['boundaryField']['yeast_bottom']['type'] = nutrient_absorbing_bc
-                c_dict['boundaryField']['yeast_top']['type'] = 'zeroGradient'
+                c_dict['boundaryField']['yeast_bottom'] = nutrient_absorbing_bc
+                c_dict['boundaryField']['yeast_top'] = {'type': 'zeroGradient'}
 
             else:
                 print 'Please define the yeast position...'
@@ -185,14 +185,16 @@ class Simulation(object):
             if yeast_position is 'top':
                 boundary_dict['yeast_top']['type'] = 'wall'
                 U_dict['boundaryField']['yeast_top']['type'] = 'noSlip'
-                c_dict['boundaryField']['yeast_top']['type'] = nutrient_absorbing_bc
-                c_dict['boundaryField']['yeast_top']['type'] = 'zeroGradient'
+
+                c_dict['boundaryField']['yeast_top'] = nutrient_absorbing_bc
+                c_dict['boundaryField']['yeast_bottom'] = {'type': 'zeroGradient'}
 
             elif yeast_position is 'bottom':
                 boundary_dict['yeast_top']['type'] = 'patch'
                 U_dict['boundaryField']['yeast_top']['type'] = 'slip'
-                c_dict['boundaryField']['yeast_top']['type'] = 'zeroGradient'
-                c_dict['boundaryField']['yeast_bottom']['type'] = nutrient_absorbing_bc
+
+                c_dict['boundaryField']['yeast_top'] = {'type': 'zeroGradient'}
+                c_dict['boundaryField']['yeast_bottom'] = nutrient_absorbing_bc
 
             else:
                 print 'Please define the yeast position...'
