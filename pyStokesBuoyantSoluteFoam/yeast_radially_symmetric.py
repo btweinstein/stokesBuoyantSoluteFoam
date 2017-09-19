@@ -58,6 +58,7 @@ class Simulation(object):
         self.r_yeast = r_yeast # Physical radius of yeast colony
         self.j_m_colony = j_m_colony # Mass flux per unit area of yeast
         self.sim_path = sim_path
+        self.sim_basename = os.path.basename(sim_path)
 
         self.nu = (self.mu / rho_0)
         self.nu.ito(ureg.centimeter ** 2 / ureg.second)
@@ -83,24 +84,31 @@ class Simulation(object):
         self.G = (self.h*self.j_m_colony)/(D*rho_0*beta)
         self.G.ito(ureg.dimensionless)
 
-    def create_gmsh(self, mesh_size=0.1, slice_angle=2.5):
+    def create_gmsh(self, mesh_size=0.1, slice_angle=2.5, **kwargs):
 
         lc = mesh_size
         r_yeast = self.nd_r_yeast.magnitude
         r_petri = self.nd_r_petri.magnitude
+
+        geo_path = sim_setup_dir + '/yeast_radially_symmetric.geo'
+        final_mesh_path = self.sim_path + '/' + self.sim_basename + '.msh'
 
         subprocess.call(['gmsh', '-1', '-2', '-3',
                          '-setnumber', 'lc', str(lc),
                          '-setnumber', 'r_yeast', str(r_yeast),
                          '-setnumber', 'r_petri', str(r_petri),
                          '-setnumber', 'slice_angle', str(slice_angle),
-                         sim_setup_dir + '/yeast_radially_symmetric.geo',
-                         '-o', self.sim_path + '/yeast_radially_symmetric.msh']
+                         geo_path, '-o', final_mesh_path]
                         )
+        # Now convert to openfoam format
+        subprocess.call(['gmshToFoam', final_mesh_path,
+                         '-case', self.sim_path])
 
-    def create_openfoam_sim(self):
+    def create_openfoam_sim(self, **kwargs):
         # Copy the skeleton into the new location. If the location already exists, delete & replace.
         if os.path.isdir(self.sim_path):
             shutil.rmtree(self.sim_path)
         shutil.copytree(sim_setup_dir, self.sim_path)
-        shutil.move(sim_setup_dir + 'yeast_radially_symmetric.foam', sim_setup_dir + '') # TODO: START HERE, NEED TO GET BASENAME OF SIMULATION
+        shutil.move(self.sim_path + '/yeast_radially_symmetric.foam', self.sim_path + '/' + self.sim_basename + '.foam')
+
+        self.create_gmsh(**kwargs)
