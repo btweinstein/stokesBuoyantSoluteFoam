@@ -4,6 +4,13 @@ import numpy as np
 import os
 import shutil
 
+import PyFoam
+from PyFoam.RunDictionary.SolutionFile import SolutionFile
+from PyFoam.RunDictionary.SolutionDirectory import SolutionDirectory
+from PyFoam.RunDictionary.ParsedParameterFile import ParsedParameterFile
+from PyFoam.RunDictionary.BoundaryDict import BoundaryDict
+
+
 # Get path to *this* file. Necessary when applying gmsh to the packaged geometry
 full_path = os.path.realpath(__file__)
 file_dir = os.path.dirname(full_path)
@@ -84,6 +91,8 @@ class Simulation(object):
         self.G = (self.h*self.j_m_colony)/(D*rho_0*beta)
         self.G.ito(ureg.dimensionless)
 
+        self.openfoam_case = None
+
     def create_gmsh(self, mesh_size=0.1, slice_angle=2.5, **kwargs):
 
         lc = mesh_size
@@ -104,7 +113,11 @@ class Simulation(object):
         subprocess.call(['gmshToFoam', final_mesh_path,
                          '-case', self.sim_path])
 
-    def create_openfoam_sim(self, **kwargs):
+    def create_openfoam_sim(self, yeast_position=None, covered_interface=None,
+                            **kwargs):
+        # yeast_position: whether the yeast is on the TOP or BOTTOM of the geometry.
+        # covered_interface: whether the free interface is covered or not.
+
         # Copy the skeleton into the new location. If the location already exists, delete & replace.
         if os.path.isdir(self.sim_path):
             shutil.rmtree(self.sim_path)
@@ -112,3 +125,17 @@ class Simulation(object):
         shutil.move(self.sim_path + '/yeast_radially_symmetric.foam', self.sim_path + '/' + self.sim_basename + '.foam')
 
         self.create_gmsh(**kwargs)
+
+        self.openfoam_case = SolutionDirectory(self.sim_path)
+
+        # Update the boundary file...this is radially symmetric.
+        boundary_dict = BoundaryDict(self.sim_path)
+
+        # The below definitions are *always* true, regardless of what I vary.
+        boundary_dict['left_sym']['type'] = 'wedge'
+        boundary_dict['right_sym']['type'] = 'wedge'
+
+        boundary_dict['yeast_top']['type'] = 'wall'
+        boundary_dict['yeast_bottom']['type'] = 'wall'
+        boundary_dict['petri_outer']['type'] = 'wall'
+        boundary_dict['petri_bottom']['type'] = 'wall'
