@@ -92,6 +92,8 @@ class Simulation(object):
         self.G.ito(ureg.dimensionless)
 
         self.openfoam_case = None
+        self.covered_interface = None
+        self.yeast_position = None
 
     def create_gmsh(self, mesh_size=0.1, slice_angle=2.5, **kwargs):
 
@@ -127,6 +129,8 @@ class Simulation(object):
         self.create_gmsh(**kwargs)
 
         self.openfoam_case = SolutionDirectory(self.sim_path)
+        self.yeast_position = yeast_position
+        self.covered_interface = covered_interface
 
         # Update the boundary file...this is radially symmetric.
         boundary_dict = BoundaryDict(self.sim_path)
@@ -139,3 +143,12 @@ class Simulation(object):
         boundary_dict['yeast_bottom']['type'] = 'wall'
         boundary_dict['petri_outer']['type'] = 'wall'
         boundary_dict['petri_bottom']['type'] = 'wall'
+
+        if self.covered_interface: # The top is a wall
+            boundary_dict['petri_top']['type'] = 'wall'
+        else: # The interface is free
+            boundary_dict['petri_top']['type'] = 'patch'
+
+        boundary_dict.writeFile()
+
+        # Now update the boundary conditions as appropriate.
