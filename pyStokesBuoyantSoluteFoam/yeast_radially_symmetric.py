@@ -140,6 +140,12 @@ class Simulation(object):
         self.yeast_position = yeast_position
         self.covered_interface = covered_interface
 
+        # Update the parameters file to match the desired parameters
+        parameters = ParsedParameterFile(self.sim_path + '/parameters')
+        parameters['Ra'] = self.Ra_star.magnitude
+        parameters['swakVariables'] = [r'"G=' + str(self.G.magnitude) + r';"']
+        parameters.writeFile()
+
         # Update the boundary file and conditions as appropriate...
         # Remember, the only things that vary are whether the interface is covered
         # and the location of the yeast.
