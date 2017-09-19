@@ -58,6 +58,13 @@ m_single_yeast = (rho_yeast * V_single_yeast).to(ureg.pg)
 # Therefore, our best estimate of the mass flux is...
 j_m_single_yeast = (m_single_yeast / (A_single_yeast_projection * t_yeast)).to(ureg.pg/(ureg.hour * ureg.um**2))
 
+# Defining the boundary condition for sucking up nutrients...
+nutrient_absorbing_bc = {'fractionExpression': '"0"',
+                         'gradientExpression': '"-G*c"',
+                         'type': 'groovyBC',
+                         'value': 'uniform 1.0',
+                         'variables': '$swakVariables'}
+
 class Simulation(object):
     def __init__(self, V=None, mu=None, r_yeast=None, j_m_colony=None, sim_path=None):
         self.V = V  # Volume: must have units
@@ -132,23 +139,67 @@ class Simulation(object):
         self.yeast_position = yeast_position
         self.covered_interface = covered_interface
 
-        # Update the boundary file...this is radially symmetric.
+        # Update the boundary file and conditions as appropriate...
+        # Remember, the only things that vary are whether the interface is covered
+        # and the location of the yeast.
         boundary_dict = BoundaryDict(self.sim_path)
+        U_dict = ParsedParameterFile(self.openfoam_case.initialDir() + '/U')
+        c_dict = ParsedParameterFile(self.openfoam_case.initialDir() + '/c')
+
 
         # The below definitions are *always* true, regardless of what I vary.
         boundary_dict['left_sym']['type'] = 'wedge'
         boundary_dict['right_sym']['type'] = 'wedge'
 
-        boundary_dict['yeast_top']['type'] = 'wall'
         boundary_dict['yeast_bottom']['type'] = 'wall'
         boundary_dict['petri_outer']['type'] = 'wall'
         boundary_dict['petri_bottom']['type'] = 'wall'
 
-        if self.covered_interface: # The top is a wall
+        ### COVERED INTERFACE ###
+        if self.covered_interface is True: # The top is a wall regardless of where the yeast is
+            # Update mesh boundary info...
             boundary_dict['petri_top']['type'] = 'wall'
-        else: # The interface is free
-            boundary_dict['petri_top']['type'] = 'patch'
+            boundary_dict['yeast_top']['type'] = 'wall'
+
+            # Update velocty fields...
+            U_dict['boundaryField']['petri_top']['type'] = 'noSlip'
+            U_dict['boundaryField']['yeast_top']['type'] = 'noSlip'
+
+            # Update concentration fields...
+            if yeast_position is 'top':
+                c_dict['boundaryField']['yeast_top']['type'] = nutrient_absorbing_bc
+                c_dict['boundaryField']['yeast_bottom']['type'] = 'zeroGradient'
+
+            elif yeast_position is 'bottom':
+                c_dict['boundaryField']['yeast_bottom']['type'] = nutrient_absorbing_bc
+                c_dict['boundaryField']['yeast_top']['type'] = 'zeroGradient'
+
+            else:
+                print 'Please define the yeast position...'
+
+        ### FREE INTERFACE ###
+        elif self.covered_interface is False: # The interface is free...things change depending on where yeast is
+            boundary_dict['petri_top']['type'] = 'patch' # Always slip
+            U_dict['boundaryField']['petri_top']['type']= 'slip'
+
+            if yeast_position is 'top':
+                boundary_dict['yeast_top']['type'] = 'wall'
+                U_dict['boundaryField']['yeast_top']['type'] = 'noSlip'
+                c_dict['boundaryField']['yeast_top']['type'] = nutrient_absorbing_bc
+                c_dict['boundaryField']['yeast_top']['type'] = 'zeroGradient'
+
+            elif yeast_position is 'bottom':
+                boundary_dict['yeast_top']['type'] = 'patch'
+                U_dict['boundaryField']['yeast_top']['type'] = 'slip'
+                c_dict['boundaryField']['yeast_top']['type'] = 'zeroGradient'
+                c_dict['boundaryField']['yeast_bottom']['type'] = nutrient_absorbing_bc
+
+            else:
+                print 'Please define the yeast position...'
+
+        else:
+            print 'Please specify whether the interface is covered (true) or not (false)...'
 
         boundary_dict.writeFile()
-
-        # Now update the boundary conditions as appropriate.
+        U_dict.writeFile()
+        c_dict.writeFile()
