@@ -2,11 +2,14 @@ import pint # For easy units
 import subprocess
 import numpy as np
 import os
+import shutil
 
 # Get path to *this* file. Necessary when applying gmsh to the packaged geometry
 full_path = os.path.realpath(__file__)
 file_dir = os.path.dirname(full_path)
 parent_dir = os.path.dirname(file_dir)
+
+sim_setup_dir = file_dir + '/simulation_setups/yeast_radially_symmetric/'
 
 # Define constants
 
@@ -90,9 +93,12 @@ class Simulation(object):
                          '-setnumber', 'r_yeast', str(r_yeast),
                          '-setnumber', 'r_petri', str(r_petri),
                          '-setnumber', 'slice_angle', str(slice_angle),
-                         file_dir + '/yeast_radially_symmetric.geo',
-                         '-o', str(mesh_name)]
+                         sim_setup_dir + '/yeast_radially_symmetric.geo',
+                         '-o', self.sim_path + str(mesh_name)]
                         )
 
     def create_openfoam_sim(self):
-        pass
+        # Copy the skeleton into the new location. If the location already exists, delete & replace.
+        if os.path.isdir(self.sim_path):
+            shutil.rmtree(self.sim_path)
+        shutil.copytree(sim_setup_dir, self.sim_path)

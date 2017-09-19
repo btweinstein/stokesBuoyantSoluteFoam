@@ -1,1 +1,1 @@
-include pyStokesBuoyantSoluteFoam yeast_choosing_params.geo
+recursive-include pyStokesBuoyantSoluteFoam/simulation_setups *
