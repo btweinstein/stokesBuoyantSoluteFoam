@@ -1,0 +1,60 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      binary;
+    class       volVectorField;
+    location    "0";
+    object      wallShearStress;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform (0 0 0);
+
+boundaryField
+{
+    left_sym
+    {
+        type            wedge;
+    }
+    yeast_bottom
+    {
+        type            calculated;
+        value           uniform (0 0 0);
+    }
+    yeast_top
+    {
+        type            calculated;
+        value           uniform (0 0 0);
+    }
+    petri_bottom
+    {
+        type            calculated;
+        value           uniform (0 0 0);
+    }
+    petri_top
+    {
+        type            calculated;
+        value           uniform (0 0 0);
+    }
+    petri_outer
+    {
+        type            calculated;
+        value           uniform (0 0 0);
+    }
+    right_sym
+    {
+        type            wedge;
+    }
+}
+
+
+// ************************************************************************* //

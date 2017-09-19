@@ -49,11 +49,12 @@ m_single_yeast = (rho_yeast * V_single_yeast).to(ureg.pg)
 j_m_single_yeast = (m_single_yeast / (A_single_yeast_projection * t_yeast)).to(ureg.pg/(ureg.hour * ureg.um**2))
 
 class Simulation(object):
-    def __init__(self, V=None, mu=None, r_yeast=None, j_m_colony=None):
+    def __init__(self, V=None, mu=None, r_yeast=None, j_m_colony=None, sim_path=None):
         self.V = V  # Volume: must have units
         self.mu = mu # Viscosity: must have units
         self.r_yeast = r_yeast # Physical radius of yeast colony
         self.j_m_colony = j_m_colony # Mass flux per unit area of yeast
+        self.sim_path = sim_path
 
         self.nu = (self.mu / rho_0)
         self.nu.ito(ureg.centimeter ** 2 / ureg.second)
@@ -92,3 +93,6 @@ class Simulation(object):
                          file_dir + '/yeast_radially_symmetric.geo',
                          '-o', str(mesh_name)]
                         )
+
+    def create_openfoam_sim(self):
+        pass

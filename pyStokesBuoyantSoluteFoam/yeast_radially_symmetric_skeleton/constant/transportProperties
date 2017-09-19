@@ -1,0 +1,24 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       o          |                                                          |
+|    o     o       | HELYX-OS                                                  |
+|   o   O   o      | Version: v2.4.0                                           |
+|    o     o       | Web:     http://www.engys.com                            |
+|       o          |                                                          |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version 2.0;
+    format ascii;
+    class dictionary;
+    location constant;
+    object transportProperties;
+}
+
+#include "../parameters"
+
+
+materialName dimensionless;
+Ra Ra [0 4 -2 0 -1 0 0] $Ra;
+
+transportModel Newtonian;
+nu nu [0 2 -1 0 0 0 0] 1.0; // DO NOT CHANGE THIS, SOLVER ASSUMES NU=1. 

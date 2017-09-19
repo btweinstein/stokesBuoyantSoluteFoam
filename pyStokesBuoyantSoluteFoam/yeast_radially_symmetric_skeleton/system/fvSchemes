@@ -1,0 +1,55 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+|       o          |                                                          |
+|    o     o       | HELYX-OS                                                  |
+|   o   O   o      | Version: v2.4.0                                           |
+|    o     o       | Web:     http://www.engys.com                            |
+|       o          |                                                          |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version 2.0;
+    format ascii;
+    class dictionary;
+    location system;
+    object fvSchemes;
+}
+
+    ddtSchemes
+    {
+	default none;
+	ddt(c) CrankNicolson 0.9;
+    }
+
+    gradSchemes
+    {
+        default Gauss linear;
+    }
+
+    divSchemes
+    {
+        default none;
+	div(phi,c) Gauss linearUpwind grad(c);
+	div((nuEff*dev2(T(grad(U))))) Gauss linear;
+    }
+
+    interpolationSchemes
+    {
+        default linear;
+    }
+
+    laplacianSchemes
+    {
+        default Gauss linear orthogonal; // We can use an orthogonal correction
+    }
+
+    snGradSchemes
+    {
+        default orthogonal; // Our mesh is orthogonal, thankfully
+    }
+
+    fluxRequired
+    {
+        default yes;
+        p;
+	p_rgh;
+    }
