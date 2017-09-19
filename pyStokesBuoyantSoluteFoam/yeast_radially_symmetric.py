@@ -67,7 +67,8 @@ nutrient_absorbing_bc = {'fractionExpression': '"0"',
                          'variables': '$swakVariables'}
 
 class Simulation(object):
-    def __init__(self, V=None, mu=None, r_yeast=None, j_m_colony=None, sim_path=None):
+    def __init__(self, V=None, mu=None, r_yeast=None, j_m_colony=None, sim_path=None,
+                 yeast_position=None, covered_interface=None):
         self.V = V  # Volume: must have units
         self.mu = mu # Viscosity: must have units
         self.r_yeast = r_yeast # Physical radius of yeast colony
@@ -100,8 +101,8 @@ class Simulation(object):
         self.G.ito(ureg.dimensionless)
 
         self.openfoam_case = None
-        self.covered_interface = None
-        self.yeast_position = None
+        self.covered_interface = covered_interface
+        self.yeast_position = yeast_position
 
     def create_gmsh(self, mesh_size=0.1, slice_angle=2.5, **kwargs):
 
@@ -123,8 +124,7 @@ class Simulation(object):
         subprocess.call(['gmshToFoam', final_mesh_path,
                          '-case', self.sim_path])
 
-    def create_openfoam_sim(self, yeast_position=None, covered_interface=None,
-                            **kwargs):
+    def create_openfoam_sim(self, **kwargs):
         # yeast_position: whether the yeast is on the TOP or BOTTOM of the geometry.
         # covered_interface: whether the free interface is covered or not.
 
@@ -137,8 +137,6 @@ class Simulation(object):
         self.create_gmsh(**kwargs)
 
         self.openfoam_case = SolutionDirectory(self.sim_path)
-        self.yeast_position = yeast_position
-        self.covered_interface = covered_interface
 
         # Update the parameters file to match the desired parameters
         parameters = ParsedParameterFile(self.sim_path + '/parameters')
@@ -173,11 +171,11 @@ class Simulation(object):
             U_dict['boundaryField']['yeast_top']['type'] = 'noSlip'
 
             # Update concentration fields...
-            if yeast_position is 'top':
+            if self.yeast_position is 'top':
                 c_dict['boundaryField']['yeast_top'] = nutrient_absorbing_bc
                 c_dict['boundaryField']['yeast_bottom'] = {'type': 'zeroGradient'}
 
-            elif yeast_position is 'bottom':
+            elif self.yeast_position is 'bottom':
                 c_dict['boundaryField']['yeast_bottom'] = nutrient_absorbing_bc
                 c_dict['boundaryField']['yeast_top'] = {'type': 'zeroGradient'}
 
@@ -189,14 +187,14 @@ class Simulation(object):
             boundary_dict['petri_top']['type'] = 'patch' # Always slip
             U_dict['boundaryField']['petri_top']['type']= 'slip'
 
-            if yeast_position is 'top':
+            if self.yeast_position is 'top':
                 boundary_dict['yeast_top']['type'] = 'wall'
                 U_dict['boundaryField']['yeast_top']['type'] = 'noSlip'
 
                 c_dict['boundaryField']['yeast_top'] = nutrient_absorbing_bc
                 c_dict['boundaryField']['yeast_bottom'] = {'type': 'zeroGradient'}
 
-            elif yeast_position is 'bottom':
+            elif self.yeast_position is 'bottom':
                 boundary_dict['yeast_top']['type'] = 'patch'
                 U_dict['boundaryField']['yeast_top']['type'] = 'slip'
 
