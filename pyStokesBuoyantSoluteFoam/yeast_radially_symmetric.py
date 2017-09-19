@@ -83,7 +83,8 @@ class Simulation(object):
         self.G = (self.h*self.j_m_colony)/(D*rho_0*beta)
         self.G.ito(ureg.dimensionless)
 
-    def create_gmsh(self, mesh_name, mesh_size=0.1, slice_angle=2.5):
+    def create_gmsh(self, mesh_size=0.1, slice_angle=2.5):
+
         lc = mesh_size
         r_yeast = self.nd_r_yeast.magnitude
         r_petri = self.nd_r_petri.magnitude
@@ -94,7 +95,7 @@ class Simulation(object):
                          '-setnumber', 'r_petri', str(r_petri),
                          '-setnumber', 'slice_angle', str(slice_angle),
                          sim_setup_dir + '/yeast_radially_symmetric.geo',
-                         '-o', self.sim_path + str(mesh_name)]
+                         '-o', self.sim_path + '/yeast_radially_symmetric.msh']
                         )
 
     def create_openfoam_sim(self):
@@ -102,3 +103,4 @@ class Simulation(object):
         if os.path.isdir(self.sim_path):
             shutil.rmtree(self.sim_path)
         shutil.copytree(sim_setup_dir, self.sim_path)
+        shutil.move(sim_setup_dir + 'yeast_radially_symmetric.foam', sim_setup_dir + '') # TODO: START HERE, NEED TO GET BASENAME OF SIMULATION
