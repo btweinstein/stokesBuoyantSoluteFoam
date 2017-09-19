@@ -3,6 +3,7 @@ import subprocess
 import numpy as np
 import os
 import shutil
+import cPickle as pkl
 
 import PyFoam
 from PyFoam.RunDictionary.SolutionFile import SolutionFile
@@ -205,3 +206,7 @@ class Simulation(object):
         boundary_dict.writeFile()
         U_dict.writeFile()
         c_dict.writeFile()
+
+        # Pickle this class so that we know what precise parameters were used.
+        with open(self.sim_path + '/' + self.sim_basename +'.pkl', 'wb') as fi:
+            pkl.dump(self.__dict__, fi)
