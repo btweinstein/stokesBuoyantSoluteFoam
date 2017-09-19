@@ -139,7 +139,7 @@ class Simulation(object):
         self.openfoam_case = SolutionDirectory(self.sim_path)
 
         # Update the parameters file to match the desired parameters
-        parameters = ParsedParameterFile(self.sim_path + '/parameters')
+        parameters = ParsedParameterFile(self.sim_path + '/parameters', treatBinaryAsASCII=True)
         parameters['Ra'] = self.Ra_star.magnitude
         parameters['swakVariables'] = [r'"G=' + str(self.G.magnitude) + r';"']
         parameters.writeFile()
@@ -147,9 +147,9 @@ class Simulation(object):
         # Update the boundary file and conditions as appropriate...
         # Remember, the only things that vary are whether the interface is covered
         # and the location of the yeast.
-        boundary_dict = BoundaryDict(self.sim_path)
-        U_dict = ParsedParameterFile(self.openfoam_case.initialDir() + '/U')
-        c_dict = ParsedParameterFile(self.openfoam_case.initialDir() + '/c')
+        boundary_dict = BoundaryDict(self.sim_path, treatBinaryAsASCII=True)
+        U_dict = ParsedParameterFile(self.openfoam_case.initialDir() + '/U', treatBinaryAsASCII=True)
+        c_dict = ParsedParameterFile(self.openfoam_case.initialDir() + '/c', treatBinaryAsASCII=True)
 
 
         # The below definitions are *always* true, regardless of what I vary.
