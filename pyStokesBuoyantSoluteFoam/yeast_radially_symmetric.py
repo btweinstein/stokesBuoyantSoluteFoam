@@ -223,3 +223,7 @@ class Simulation(object):
                 open(self.sim_path + '/err.txt', 'wb') as f_err:
             self.sim_process = subprocess.Popen(['stokesBuoyantSoluteFoam', '-case', self.sim_path],
                                                 stdout=f_out, stderr=f_err)
+
+    def get_physical_v(self, v_non_dim):
+        vc = D/self.h
+        return (vc*v_non_dim).to(ureg.cm/ureg.day)
