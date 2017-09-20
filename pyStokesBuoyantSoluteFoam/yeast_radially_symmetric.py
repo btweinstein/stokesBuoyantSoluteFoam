@@ -132,7 +132,7 @@ class Simulation(object):
         if os.path.isdir(self.sim_path):
             shutil.rmtree(self.sim_path)
         shutil.copytree(sim_setup_dir, self.sim_path)
-        shutil.move(self.sim_path + '/yeast_radially_symmetric.foam', self.sim_path + '/' + self.sim_basename + '.foam')
+        shutil.copy(self.sim_path + '/yeast_radially_symmetric.foam', self.sim_path + '/' + self.sim_basename + '.foam')
 
         self.create_gmsh(**kwargs)
 
@@ -216,6 +216,8 @@ class Simulation(object):
             pkl.dump(self.__dict__, fi)
 
     def run_simulation(self):
-        subprocess.call(['stokesBuoyantSoluteFoam',
-                         '-case', self.sim_path,
-                         '&>', self.sim_path + '/log.txt'])
+        # Open a file for the log file
+        with open(self.sim_path + '/log.txt', 'wb') as fi:
+            subprocess.call(['stokesBuoyantSoluteFoam',
+                             '-case', self.sim_path],
+                            stdout=fi)
