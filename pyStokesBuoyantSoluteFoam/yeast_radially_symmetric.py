@@ -104,6 +104,8 @@ class Simulation(object):
         self.covered_interface = covered_interface
         self.yeast_position = yeast_position
 
+        self.sim_process = None # The actual process that the simulation is running under outside of python.
+
     def create_gmsh(self, mesh_size=0.1, slice_angle=2.5, **kwargs):
 
         lc = mesh_size
@@ -217,7 +219,7 @@ class Simulation(object):
 
     def run_simulation(self):
         # Open a file for the log file
-        with open(self.sim_path + '/log.txt', 'wb') as fi:
-            subprocess.call(['stokesBuoyantSoluteFoam',
-                             '-case', self.sim_path],
-                            stdout=fi)
+        with open(self.sim_path + '/log.txt', 'wb') as f_out, \
+                open(self.sim_path + '/err.txt', 'wb') as f_err:
+            self.sim_process = subprocess.Popen(['stokesBuoyantSoluteFoam', '-case', self.sim_path],
+                                                stdout=f_out, stderr=f_err)
