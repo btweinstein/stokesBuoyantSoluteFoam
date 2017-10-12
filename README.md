@@ -18,4 +18,4 @@ You can then run the script by typing
 
 ## Examples of Use
 
-See the [examples][https://github.com/btweinstein/stokesBuoyantSoluteFoam/tree/master/examples] folder. 
+See the [examples](https://github.com/btweinstein/stokesBuoyantSoluteFoam/tree/master/examples) folder. 
