@@ -3,8 +3,10 @@ from paraview.simple import *
 #### disable automatic camera reset on 'Show'
 paraview.simple._DisableFirstRenderCameraReset()
 
+import sys
+
 # create a new 'OpenFOAMReader'
-j_m_colony_sweep_0p10foam = OpenFOAMReader(FileName='/home/bryan/Documents/2017_09_19_fitting_jmass_sweep/j_m_colony_sweep_0p10/j_m_colony_sweep_0p10.foam')
+simulation = OpenFOAMReader(FileName=sys.argv[1])
 
 # get animation scene
 animationScene1 = GetAnimationScene()
@@ -13,8 +15,8 @@ animationScene1 = GetAnimationScene()
 animationScene1.UpdateAnimationUsingDataTimeSteps()
 
 # Properties modified on j_m_colony_sweep_0p10foam
-j_m_colony_sweep_0p10foam.MeshRegions = ['internalMesh', 'yeast_top', 'yeast_bottom', 'petri_top', 'petri_outer', 'petri_bottom']
-j_m_colony_sweep_0p10foam.CellArrays = ['U', 'c', 'p', 'p_rgh']
+simulation.MeshRegions = ['internalMesh', 'yeast_top', 'yeast_bottom', 'petri_top', 'petri_outer', 'petri_bottom']
+simulation.CellArrays = ['U', 'c', 'p', 'p_rgh']
 
 # get active view
 renderView1 = GetActiveViewOrCreate('RenderView')
@@ -22,15 +24,15 @@ renderView1 = GetActiveViewOrCreate('RenderView')
 # renderView1.ViewSize = [1234, 791]
 
 # show data in view
-j_m_colony_sweep_0p10foamDisplay = Show(j_m_colony_sweep_0p10foam, renderView1)
+simulation_display = Show(simulation, renderView1)
 # trace defaults for the display properties.
-j_m_colony_sweep_0p10foamDisplay.Representation = 'Surface'
+simulation_display.Representation = 'Surface'
 
 # reset view to fit data
 renderView1.ResetCamera()
 
 # show color bar/color legend
-j_m_colony_sweep_0p10foamDisplay.SetScalarBarVisibility(renderView1, True)
+simulation_display.SetScalarBarVisibility(renderView1, True)
 
 # update the view to ensure updated data information
 renderView1.Update()
@@ -42,7 +44,7 @@ pLUT = GetColorTransferFunction('p')
 renderView1.ResetCamera()
 
 # create a new 'Slice'
-slice1 = Slice(Input=j_m_colony_sweep_0p10foam)
+slice1 = Slice(Input=simulation)
 
 # Properties modified on slice1.SliceType
 slice1.SliceType.Origin = [1.99952399730682, 0.0, 0.5]
@@ -58,7 +60,7 @@ slice1Display = Show(slice1, renderView1)
 slice1Display.Representation = 'Surface'
 
 # hide data in view
-Hide(j_m_colony_sweep_0p10foam, renderView1)
+Hide(simulation, renderView1)
 
 # show color bar/color legend
 slice1Display.SetScalarBarVisibility(renderView1, True)
@@ -92,7 +94,7 @@ cLUTColorBar.Position = [0.2662398703403566, 0.7637168141592922]
 cLUTColorBar.ScalarBarLength = 0.33
 
 # set active source
-SetActiveSource(j_m_colony_sweep_0p10foam)
+SetActiveSource(simulation)
 
 # set active source
 SetActiveSource(slice1)
@@ -186,7 +188,7 @@ plotOverLine1Display_1.SeriesVisibility = ['arc_length', 'c', 'p', 'p_rgh', 'U_X
 plotOverLine1Display_1.SeriesVisibility = ['c', 'p', 'p_rgh', 'U_X', 'U_Y', 'U_Z', 'U_Magnitude']
 
 # save data
-SaveData('/home/bryan/Documents/2017_09_19_fitting_jmass_sweep/j_m_colony_sweep_0p10/left_axis_csv/left_axis.csv', proxy=plotOverLine1, WriteAllTimeSteps=1)
+SaveData(sys.argv[2], proxy=plotOverLine1, WriteAllTimeSteps=1)
 
 # set active source
 SetActiveSource(slice1)
