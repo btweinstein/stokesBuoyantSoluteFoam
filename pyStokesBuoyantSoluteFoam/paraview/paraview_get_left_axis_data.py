@@ -4,6 +4,8 @@ from paraview.simple import *
 paraview.simple._DisableFirstRenderCameraReset()
 
 import sys
+import os
+import shutil
 
 # create a new 'OpenFOAMReader'
 simulation = OpenFOAMReader(FileName=sys.argv[1])
@@ -32,7 +34,7 @@ simulation_display.Representation = 'Surface'
 renderView1.ResetCamera()
 
 # show color bar/color legend
-simulation_display.SetScalarBarVisibility(renderView1, True)
+#simulation_display.SetScalarBarVisibility(renderView1, True)
 
 # update the view to ensure updated data information
 renderView1.Update()
@@ -60,7 +62,7 @@ slice1Display = Show(slice1, renderView1)
 slice1Display.Representation = 'Surface'
 
 # hide data in view
-Hide(simulation, renderView1)
+#Hide(simulation, renderView1)
 
 # show color bar/color legend
 slice1Display.SetScalarBarVisibility(renderView1, True)
@@ -188,7 +190,12 @@ plotOverLine1Display_1.SeriesVisibility = ['arc_length', 'c', 'p', 'p_rgh', 'U_X
 plotOverLine1Display_1.SeriesVisibility = ['c', 'p', 'p_rgh', 'U_X', 'U_Y', 'U_Z', 'U_Magnitude']
 
 # save data
-SaveData(sys.argv[2], proxy=plotOverLine1, WriteAllTimeSteps=1)
+folder_path = sys.argv[1] + '/left_axis_csv/'
+if os.path.isdir(folder_path):
+    shutil.rmtree(folder_path)
+os.makedirs(folder_path)
+
+SaveData(folder_path + 'left_axis.csv', proxy=plotOverLine1, WriteAllTimeSteps=1)
 
 # set active source
 SetActiveSource(slice1)
