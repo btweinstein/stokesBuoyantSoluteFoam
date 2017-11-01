@@ -18,8 +18,8 @@ print r_max
 simulation = OpenFOAMReader(FileName=simulation_dir)
 
 # Properties modified on j_m_colony_sweep_0p10foam
-simulation.MeshRegions = ['internalMesh', 'yeast_top', 'yeast_bottom', 'petri_top', 'petri_outer', 'petri_bottom']
-simulation.CellArrays = ['U', 'c', 'p', 'p_rgh']
+simulation.MeshRegions = ['yeast_top', 'yeast_bottom', 'petri_top', 'petri_outer', 'petri_bottom']
+simulation.CellArrays = ['U', 'c', 'p', 'p_rgh', 'wallShearStress']
 
 # create a new 'Slice'
 slice1 = Slice(Input=simulation)
