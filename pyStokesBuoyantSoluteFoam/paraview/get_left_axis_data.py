@@ -29,22 +29,33 @@ slice1.SliceType.Normal = [0.0, 1.0, 0.0]
 # set active source
 SetActiveSource(slice1)
 
-# create a new 'Plot Over Line'
-plotOverLine1 = PlotOverLine(Input=slice1, Source='High Resolution Line Source')
+line_points = []
+axis_names = []
 
-# Properties modified on plotOverLine1.Source
-plotOverLine1.Source.Point2 = [0.0, 0.0, 1.0]
+line_tolerance = 3e-16
+### Left Axis ###
 
-# Properties modified on plotOverLine1
-plotOverLine1.Tolerance = 2.22044604925031e-16
+axis_names.append('left_axis')
 
-# Properties modified on plotOverLine1.Source
-plotOverLine1.Source.Point2 = [0.0, 0.0, 1.0]
+left_line_points = [
+    [0.0, 0.0, 0.0],
+    [0.0, 0.0, 1.0]
+]
+line_points.append(left_line_points)
 
-# save data
-folder_path = sys.argv[1] + '/left_axis_csv/'
-if os.path.isdir(folder_path):
-    shutil.rmtree(folder_path)
-os.makedirs(folder_path)
+for cur_line_points, cur_axis_name in zip(line_points, axis_names):
+    cur_line = PlotOverLine(Input=slice1, Source='High Resolution Line Source')
 
-SaveData(folder_path + 'left_axis.csv', proxy=plotOverLine1, WriteAllTimeSteps=1)
+    cur_line.Source.Point1 = cur_line_points[0]
+    cur_line.Source.Point2 = cur_line_points[1]
+
+    # Properties modified on plotOverLine1
+    cur_line.Tolerance = 3e-16
+
+    # save data
+    folder_path = sys.argv[1] + '/' + cur_axis_name + '/'
+    if os.path.isdir(folder_path):
+        shutil.rmtree(folder_path)
+    os.makedirs(folder_path)
+
+    SaveData(folder_path + cur_axis_name + '.csv', proxy=cur_line, WriteAllTimeSteps=1)
