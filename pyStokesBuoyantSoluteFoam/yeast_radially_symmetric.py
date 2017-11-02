@@ -106,6 +106,11 @@ class Simulation(object):
 
         self.sim_process = None # The actual process that the simulation is running under outside of python.
 
+    @classmethod
+    def load(cls, pkl_path):
+        with open(pkl_path, 'rb') as fi:
+            return pkl.load(fi)
+
     def create_gmsh(self, mesh_size=0.1, slice_angle=2.5, **kwargs):
 
         lc = mesh_size
@@ -215,7 +220,7 @@ class Simulation(object):
 
         # Pickle this class so that we know what precise parameters were used.
         with open(self.sim_path + '/' + self.sim_basename +'.pkl', 'wb') as fi:
-            pkl.dump(self.__dict__, fi)
+            pkl.dump(self, fi)
 
     def run_simulation(self):
         # Open a file for the log file
