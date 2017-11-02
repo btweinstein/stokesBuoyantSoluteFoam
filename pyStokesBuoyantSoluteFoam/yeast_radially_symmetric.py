@@ -131,96 +131,104 @@ class Simulation(object):
         subprocess.call(['gmshToFoam', final_mesh_path,
                          '-case', self.sim_path])
 
-    def create_openfoam_sim(self, **kwargs):
+    def create_openfoam_sim(self, delete_old_sim=False, **kwargs):
         # yeast_position: whether the yeast is on the TOP or BOTTOM of the geometry.
         # covered_interface: whether the free interface is covered or not.
 
         # Copy the skeleton into the new location. If the location already exists, delete & replace.
-        if os.path.isdir(self.sim_path):
-            shutil.rmtree(self.sim_path)
-        shutil.copytree(sim_setup_dir, self.sim_path)
-        shutil.copy(self.sim_path + '/yeast_radially_symmetric.foam', self.sim_path + '/' + self.sim_basename + '.foam')
+        continue_sim = True
 
-        self.create_gmsh(**kwargs)
-
-        self.openfoam_case = SolutionDirectory(self.sim_path)
-
-        # Update the parameters file to match the desired parameters
-        parameters = ParsedParameterFile(self.sim_path + '/parameters', treatBinaryAsASCII=True)
-        parameters['Ra'] = self.Ra_star.magnitude
-        parameters['swakVariables'] = [r'"G=' + str(self.G.magnitude) + r';"']
-        parameters.writeFile()
-
-        # Update the boundary file and conditions as appropriate...
-        # Remember, the only things that vary are whether the interface is covered
-        # and the location of the yeast.
-        boundary_dict = BoundaryDict(self.sim_path, treatBinaryAsASCII=True)
-        U_dict = ParsedParameterFile(self.openfoam_case.initialDir() + '/U', treatBinaryAsASCII=True)
-        c_dict = ParsedParameterFile(self.openfoam_case.initialDir() + '/c', treatBinaryAsASCII=True)
-
-
-        # The below definitions are *always* true, regardless of what I vary.
-        boundary_dict['left_sym']['type'] = 'wedge'
-        boundary_dict['right_sym']['type'] = 'wedge'
-
-        boundary_dict['yeast_bottom']['type'] = 'wall'
-        boundary_dict['petri_outer']['type'] = 'wall'
-        boundary_dict['petri_bottom']['type'] = 'wall'
-
-        ### COVERED INTERFACE ###
-        if self.covered_interface is True: # The top is a wall regardless of where the yeast is
-            # Update mesh boundary info...
-            boundary_dict['petri_top']['type'] = 'wall'
-            boundary_dict['yeast_top']['type'] = 'wall'
-
-            # Update velocty fields...
-            U_dict['boundaryField']['petri_top']['type'] = 'noSlip'
-            U_dict['boundaryField']['yeast_top']['type'] = 'noSlip'
-
-            # Update concentration fields...
-            if self.yeast_position is 'top':
-                c_dict['boundaryField']['yeast_top'] = nutrient_absorbing_bc
-                c_dict['boundaryField']['yeast_bottom'] = {'type': 'zeroGradient'}
-
-            elif self.yeast_position is 'bottom':
-                c_dict['boundaryField']['yeast_bottom'] = nutrient_absorbing_bc
-                c_dict['boundaryField']['yeast_top'] = {'type': 'zeroGradient'}
-
+        if os.path.isdir(self.sim_path): # If the simulation already exists
+            if not delete_old_sim:
+                print r'The simulation already exists...I\'m not going to delete it'
+                continue_sim = False
             else:
-                print 'Please define the yeast position...'
+                shutil.rmtree(self.sim_path)
+        if continue_sim:
 
-        ### FREE INTERFACE ###
-        elif self.covered_interface is False: # The interface is free...things change depending on where yeast is
-            boundary_dict['petri_top']['type'] = 'patch' # Always slip
-            U_dict['boundaryField']['petri_top']['type']= 'slip'
+            shutil.copytree(sim_setup_dir, self.sim_path)
+            shutil.copy(self.sim_path + '/yeast_radially_symmetric.foam', self.sim_path + '/' + self.sim_basename + '.foam')
 
-            if self.yeast_position is 'top':
+            self.create_gmsh(**kwargs)
+
+            self.openfoam_case = SolutionDirectory(self.sim_path)
+
+            # Update the parameters file to match the desired parameters
+            parameters = ParsedParameterFile(self.sim_path + '/parameters', treatBinaryAsASCII=True)
+            parameters['Ra'] = self.Ra_star.magnitude
+            parameters['swakVariables'] = [r'"G=' + str(self.G.magnitude) + r';"']
+            parameters.writeFile()
+
+            # Update the boundary file and conditions as appropriate...
+            # Remember, the only things that vary are whether the interface is covered
+            # and the location of the yeast.
+            boundary_dict = BoundaryDict(self.sim_path, treatBinaryAsASCII=True)
+            U_dict = ParsedParameterFile(self.openfoam_case.initialDir() + '/U', treatBinaryAsASCII=True)
+            c_dict = ParsedParameterFile(self.openfoam_case.initialDir() + '/c', treatBinaryAsASCII=True)
+
+
+            # The below definitions are *always* true, regardless of what I vary.
+            boundary_dict['left_sym']['type'] = 'wedge'
+            boundary_dict['right_sym']['type'] = 'wedge'
+
+            boundary_dict['yeast_bottom']['type'] = 'wall'
+            boundary_dict['petri_outer']['type'] = 'wall'
+            boundary_dict['petri_bottom']['type'] = 'wall'
+
+            ### COVERED INTERFACE ###
+            if self.covered_interface is True: # The top is a wall regardless of where the yeast is
+                # Update mesh boundary info...
+                boundary_dict['petri_top']['type'] = 'wall'
                 boundary_dict['yeast_top']['type'] = 'wall'
+
+                # Update velocty fields...
+                U_dict['boundaryField']['petri_top']['type'] = 'noSlip'
                 U_dict['boundaryField']['yeast_top']['type'] = 'noSlip'
 
-                c_dict['boundaryField']['yeast_top'] = nutrient_absorbing_bc
-                c_dict['boundaryField']['yeast_bottom'] = {'type': 'zeroGradient'}
+                # Update concentration fields...
+                if self.yeast_position is 'top':
+                    c_dict['boundaryField']['yeast_top'] = nutrient_absorbing_bc
+                    c_dict['boundaryField']['yeast_bottom'] = {'type': 'zeroGradient'}
 
-            elif self.yeast_position is 'bottom':
-                boundary_dict['yeast_top']['type'] = 'patch'
-                U_dict['boundaryField']['yeast_top']['type'] = 'slip'
+                elif self.yeast_position is 'bottom':
+                    c_dict['boundaryField']['yeast_bottom'] = nutrient_absorbing_bc
+                    c_dict['boundaryField']['yeast_top'] = {'type': 'zeroGradient'}
 
-                c_dict['boundaryField']['yeast_top'] = {'type': 'zeroGradient'}
-                c_dict['boundaryField']['yeast_bottom'] = nutrient_absorbing_bc
+                else:
+                    print 'Please define the yeast position...'
+
+            ### FREE INTERFACE ###
+            elif self.covered_interface is False: # The interface is free...things change depending on where yeast is
+                boundary_dict['petri_top']['type'] = 'patch' # Always slip
+                U_dict['boundaryField']['petri_top']['type']= 'slip'
+
+                if self.yeast_position is 'top':
+                    boundary_dict['yeast_top']['type'] = 'wall'
+                    U_dict['boundaryField']['yeast_top']['type'] = 'noSlip'
+
+                    c_dict['boundaryField']['yeast_top'] = nutrient_absorbing_bc
+                    c_dict['boundaryField']['yeast_bottom'] = {'type': 'zeroGradient'}
+
+                elif self.yeast_position is 'bottom':
+                    boundary_dict['yeast_top']['type'] = 'patch'
+                    U_dict['boundaryField']['yeast_top']['type'] = 'slip'
+
+                    c_dict['boundaryField']['yeast_top'] = {'type': 'zeroGradient'}
+                    c_dict['boundaryField']['yeast_bottom'] = nutrient_absorbing_bc
+
+                else:
+                    print 'Please define the yeast position...'
 
             else:
-                print 'Please define the yeast position...'
+                print 'Please specify whether the interface is covered (true) or not (false)...'
 
-        else:
-            print 'Please specify whether the interface is covered (true) or not (false)...'
+            boundary_dict.writeFile()
+            U_dict.writeFile()
+            c_dict.writeFile()
 
-        boundary_dict.writeFile()
-        U_dict.writeFile()
-        c_dict.writeFile()
-
-        # Pickle this class so that we know what precise parameters were used.
-        with open(self.sim_path + '/' + self.sim_basename +'.pkl', 'wb') as fi:
-            pkl.dump(self, fi)
+            # Pickle this class so that we know what precise parameters were used.
+            with open(self.sim_path + '/' + self.sim_basename +'.pkl', 'wb') as fi:
+                pkl.dump(self, fi)
 
     def run_simulation(self):
         # Open a file for the log file
