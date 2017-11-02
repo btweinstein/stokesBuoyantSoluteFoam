@@ -18,6 +18,7 @@ file_dir = os.path.dirname(full_path)
 parent_dir = os.path.dirname(file_dir)
 
 sim_setup_dir = file_dir + '/simulation_setups/yeast_radially_symmetric/'
+paraview_script_dir = file_dir + '/paraview/'
 
 # Define constants
 
@@ -240,3 +241,4 @@ class Simulation(object):
     def get_physical_v(self, v_non_dim):
         vc = D/self.h
         return (vc*v_non_dim).to(ureg.cm/ureg.day)
+
