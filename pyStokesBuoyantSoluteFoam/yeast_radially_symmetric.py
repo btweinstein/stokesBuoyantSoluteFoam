@@ -131,7 +131,7 @@ class Simulation(object):
         subprocess.call(['gmshToFoam', final_mesh_path,
                          '-case', self.sim_path])
 
-    def create_openfoam_sim(self, delete_old_sim=False, **kwargs):
+    def create_openfoam_sim(self, overwrite_old_sim=False, **kwargs):
         # yeast_position: whether the yeast is on the TOP or BOTTOM of the geometry.
         # covered_interface: whether the free interface is covered or not.
 
@@ -139,7 +139,7 @@ class Simulation(object):
         continue_sim = True
 
         if os.path.isdir(self.sim_path): # If the simulation already exists
-            if not delete_old_sim:
+            if not overwrite_old_sim:
                 print r'The simulation already exists...I\'m not going to delete it'
                 continue_sim = False
             else:
