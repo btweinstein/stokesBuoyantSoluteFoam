@@ -242,3 +242,5 @@ class Simulation(object):
         vc = D/self.h
         return (vc*v_non_dim).to(ureg.cm/ureg.day)
 
+    def paraview_extract_boundary_info(self):
+        script_path = paraview_script_dir + 'get_left_axis_data.py'
