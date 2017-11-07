@@ -242,5 +242,17 @@ class Simulation(object):
         vc = D/self.h
         return (vc*v_non_dim).to(ureg.cm/ureg.day)
 
+    def get_wall_shear_stress(self):
+        with open(self.sim_path + '/wall_shear_stress_log.txt', 'wb') as f_out, \
+                open(self.sim_path + '/wall_shear_stress_err.txt', 'wb') as f_err:
+            subprocess.Popen(['stokesBuoyantSoluteFoam', '-case', self.sim_path,
+                              '-postProcess', '-func', 'wallShearStress'],
+                             stdout=f_out, stderr=f_err)
+
     def paraview_extract_boundary_info(self):
-        script_path = paraview_script_dir + 'get_left_axis_data.py'
+        script_path = paraview_script_dir + 'get_boundary_data.py'
+        rmax = self.nd_r_petri.magnitude
+        with open(self.sim_path + '/boundary_log.txt', 'wb') as f_out, \
+                open(self.sim_path + '/boundary_err.txt', 'wb') as f_err:
+            subprocess.Popen(['pvbatch', script_path, self.sim_path + '/', str(rmax)],
+                             stdout=f_out, stderr=f_err)
