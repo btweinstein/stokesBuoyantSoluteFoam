@@ -105,7 +105,7 @@ class Simulation(object):
         self.covered_interface = covered_interface
         self.yeast_position = yeast_position
 
-        self.sim_process = None # The actual process that the simulation is running under outside of python.
+        self.cur_process = None # The actual process that the class is running outside of python.
 
     @classmethod
     def load(cls, pkl_path):
@@ -235,7 +235,7 @@ class Simulation(object):
         # Open a file for the log file
         with open(self.sim_path + '/log.txt', 'wb') as f_out, \
                 open(self.sim_path + '/err.txt', 'wb') as f_err:
-            self.sim_process = subprocess.Popen(['stokesBuoyantSoluteFoam', '-case', self.sim_path],
+            self.cur_process = subprocess.Popen(['stokesBuoyantSoluteFoam', '-case', self.sim_path],
                                                 stdout=f_out, stderr=f_err)
 
     def get_physical_v(self, v_non_dim):
@@ -245,14 +245,14 @@ class Simulation(object):
     def get_wall_shear_stress(self):
         with open(self.sim_path + '/wall_shear_stress_log.txt', 'wb') as f_out, \
                 open(self.sim_path + '/wall_shear_stress_err.txt', 'wb') as f_err:
-            subprocess.Popen(['stokesBuoyantSoluteFoam', '-case', self.sim_path,
-                              '-postProcess', '-func', 'wallShearStress'],
-                             stdout=f_out, stderr=f_err)
+            self.cur_process = subprocess.Popen(['stokesBuoyantSoluteFoam', '-case', self.sim_path,
+                                                 '-postProcess', '-func', 'wallShearStress'],
+                                                stdout=f_out, stderr=f_err)
 
     def paraview_extract_boundary_info(self):
         script_path = paraview_script_dir + 'get_boundary_data.py'
         rmax = self.nd_r_petri.magnitude
         with open(self.sim_path + '/boundary_log.txt', 'wb') as f_out, \
                 open(self.sim_path + '/boundary_err.txt', 'wb') as f_err:
-            subprocess.Popen(['pvbatch', script_path, self.sim_path + '/', str(rmax)],
-                             stdout=f_out, stderr=f_err)
+            self.cur_process = subprocess.Popen(['pvbatch', script_path, self.sim_path + '/', str(rmax)],
+                                                stdout=f_out, stderr=f_err)
