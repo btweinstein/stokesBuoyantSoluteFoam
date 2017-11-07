@@ -4,6 +4,8 @@ import numpy as np
 import os
 import shutil
 import cPickle as pkl
+import glob
+import pandas as pd
 
 import PyFoam
 from PyFoam.RunDictionary.SolutionFile import SolutionFile
@@ -256,3 +258,45 @@ class Simulation(object):
                 open(self.sim_path + '/boundary_err.txt', 'wb') as f_err:
             self.cur_process = subprocess.Popen(['pvbatch', script_path, self.sim_path + '/', str(rmax)],
                                                 stdout=f_out, stderr=f_err)
+
+    def get_boundary_info_df(self, desired_axis):
+        # Requires paraview_extract_boundary_info to be run first!
+
+        csv_files = glob.glob(self.sim_path + '/axis_' + desired_axis + '/*')
+        if len(csv_files) == 0:
+            print 'I can\'t find info on that axis...'
+            raise ValueError
+
+        time_list = [] # Organize all of the time points
+
+        contents = glob.glob(self.sim_path + '/*')
+        for cur_folder in contents:
+            cur_basename = os.path.basename(cur_folder)
+            time = None
+            try:
+                time = float(cur_basename)
+                time_list.append(time)
+            except ValueError:
+                pass
+        time_list.sort()
+
+        df_list = []
+        for cur_csv in csv_files:
+            cur_df = pd.read_csv(cur_csv)
+            cur_df.rename(columns={'U:0': 'ux', 'U:1': 'uy', 'U:2': 'uz',
+                                   'wallShearStress:0': 'tau_nx', 'wallShearStress:1': 'tau_ny',
+                                   'wallShearStress:2': 'tau_nz',
+                                   'Points:0': 'x', 'Points:1': 'y', 'Points:2': 'z'}, inplace=True)
+            # Figure out what timepoint this corresponds to
+            csv_basename = os.path.basename(cur_csv)
+
+            time_index = int(csv_basename.split('.')[1])
+            time = time_list[time_index]
+
+            cur_df['time_index'] = time_index
+            cur_df['time'] = time
+
+            df_list.append(cur_df)
+
+        df = pd.concat(df_list)
+        return df
