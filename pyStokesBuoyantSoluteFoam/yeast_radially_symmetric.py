@@ -24,7 +24,7 @@ paraview_script_dir = file_dir + '/paraview/'
 
 # Define constants
 
-ureg = pint.UnitRegistry()
+from . import ureg # Use the package unit registry...
 
 D = 2.5e-6 * (ureg.cm**2 / ureg.sec)
 r_petri = 8.7/2. * (ureg.cm) # cm
@@ -242,7 +242,7 @@ class Simulation(object):
 
     def get_physical_v(self, v_non_dim):
         vc = D/self.h
-        return (vc*v_non_dim).to(ureg.cm/ureg.day)
+        return (vc*v_non_dim).to(ureg.mm/ureg.day)
 
     def get_wall_shear_stress(self):
         with open(self.sim_path + '/wall_shear_stress_log.txt', 'wb') as f_out, \
