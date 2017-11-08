@@ -21,6 +21,11 @@ simulation = OpenFOAMReader(FileName=simulation_dir)
 simulation.MeshRegions = ['yeast_top', 'yeast_bottom', 'petri_top', 'petri_outer', 'petri_bottom', 'internalMesh']
 simulation.CellArrays = ['U', 'c', 'p', 'p_rgh', 'wallShearStress']
 
+simulation.MeshParts = ['internalMesh', 'yeast_top - patch', 'yeast_bottom - patch',
+                        'petri_top - patch', 'petri_outer - patch',
+                        'petri_bottom - patch']
+simulation.VolumeFields = ['U', 'c', 'p', 'p_rgh', 'wallShearStress']
+
 # create a new 'Slice'
 slice1 = Slice(Input=simulation)
 
