@@ -240,6 +240,9 @@ class Simulation(object):
             self.cur_process = subprocess.Popen(['stokesBuoyantSoluteFoam', '-case', self.sim_path],
                                                 stdout=f_out, stderr=f_err)
 
+    def get_physical_t(self, t_non_dim):
+        return (self.Tc*t_non_dim).to(ureg.hour)
+
     def get_physical_v(self, v_non_dim):
         vc = D/self.h
         return (vc*v_non_dim).to(ureg.mm/ureg.day)
