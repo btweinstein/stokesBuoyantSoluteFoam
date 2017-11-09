@@ -254,6 +254,13 @@ class Simulation(object):
                                                  '-postProcess', '-func', 'wallShearStress'],
                                                 stdout=f_out, stderr=f_err)
 
+    def get_vtk_output(self):
+        # Run after obtaining the wall shear stress!
+        with open(self.sim_path + '/vtk_log.txt', 'wb') as f_out, \
+                open(self.sim_path + '/vtk_err.txt', 'wb') as f_err:
+            self.cur_process = subprocess.Popen(['foamToVTK', '-case', self.sim_path, '-allPatches'],
+                                                stdout=f_out, stderr=f_err)
+
     def paraview_extract_boundary_info(self):
         script_path = paraview_script_dir + 'get_boundary_data.py'
         rmax = self.nd_r_petri.magnitude

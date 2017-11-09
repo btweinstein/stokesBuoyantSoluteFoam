@@ -6,6 +6,8 @@ paraview.simple._DisableFirstRenderCameraReset()
 import sys
 import os
 import shutil
+import glob
+import numpy as np
 
 # Parse the inputs
 simulation_dir = sys.argv[1]
@@ -15,16 +17,23 @@ print simulation_dir
 print r_max
 
 # create a new 'OpenFOAMReader'
-simulation = OpenFOAMReader(FileName=simulation_dir)
+vtk_folder = simulation_dir + 'VTK/'
+patches_folder = vtk_folder + 'allPatches/'
+patch_paths = glob.glob(patches_folder + '*.vtk')
+patch_file_names = [os.path.basename(z) for z in patch_paths]
 
-# Properties modified on j_m_colony_sweep_0p10foam
-simulation.MeshRegions = ['yeast_top', 'yeast_bottom', 'petri_top', 'petri_outer', 'petri_bottom', 'internalMesh']
-simulation.CellArrays = ['U', 'c', 'p', 'p_rgh', 'wallShearStress']
+# Sort the files for my sanity, may not actually be necessary
+patch_file_names = np.array(patch_file_names)
+file_numbers_str = [z.replace('_','.').split('.')[1] for z in patch_file_names]
+file_numbers= np.array(file_numbers_str).astype(np.int)
 
-simulation.MeshParts = ['internalMesh', 'yeast_top - patch', 'yeast_bottom - patch',
-                        'petri_top - patch', 'petri_outer - patch',
-                        'petri_bottom - patch']
-simulation.VolumeFields = ['U', 'c', 'p', 'p_rgh', 'wallShearStress']
+order = np.argsort(file_numbers)
+
+patch_paths = np.array(patch_paths)
+patch_paths = patch_paths[order]
+print patch_paths
+
+simulation = LegacyVTKReader(FileNames=patch_paths)
 
 # create a new 'Slice'
 slice1 = Slice(Input=simulation)
@@ -32,7 +41,6 @@ slice1 = Slice(Input=simulation)
 # Properties modified on slice1.SliceType
 slice1.SliceType.Origin = [r_max/2., 0.0, 0.5]
 slice1.SliceType.Normal = [0.0, 1.0, 0.0]
-
 
 # set active source
 SetActiveSource(slice1)
