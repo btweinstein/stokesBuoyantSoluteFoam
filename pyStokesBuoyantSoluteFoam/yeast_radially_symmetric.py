@@ -259,7 +259,10 @@ class Simulation(object):
         rmax = self.nd_r_petri.magnitude
         with open(self.sim_path + '/boundary_log.txt', 'wb') as f_out, \
                 open(self.sim_path + '/boundary_err.txt', 'wb') as f_err:
-            self.cur_process = subprocess.Popen(['pvbatch', script_path, self.sim_path + '/', str(rmax)],
+            # First, create the parafoam file
+            subprocess.call(['paraFoam', '-case', self.sim_path, '-touchAll'])
+            self.cur_process = subprocess.Popen(['pvbatch', script_path, self.sim_path +
+                                                 '/' + self.sim_basename + str('.OpenFOAM'), str(rmax)],
                                                 stdout=f_out, stderr=f_err)
 
     def get_boundary_info_df(self, desired_axis):

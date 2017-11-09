@@ -1,30 +1,23 @@
-#### import the simple module from the paraview
 from paraview.simple import *
 #### disable automatic camera reset on 'Show'
 paraview.simple._DisableFirstRenderCameraReset()
 
 import sys
-import os
 import shutil
+import os
 
 # Parse the inputs
-simulation_dir = sys.argv[1]
+simulation_file = sys.argv[1]
 r_max = float(sys.argv[2])
 
-print simulation_dir
+print simulation_file
 print r_max
 
-# create a new 'OpenFOAMReader'
-simulation = OpenFOAMReader(FileName=simulation_dir)
+# create a new 'PVFoamReader'
+simulation = PVFoamReader(FileName=simulation_file)
 
-# Properties modified on j_m_colony_sweep_0p10foam
-simulation.MeshRegions = ['yeast_top', 'yeast_bottom', 'petri_top', 'petri_outer', 'petri_bottom', 'internalMesh']
-simulation.CellArrays = ['U', 'c', 'p', 'p_rgh', 'wallShearStress']
-
-simulation.MeshParts = ['internalMesh', 'yeast_top - patch', 'yeast_bottom - patch',
-                        'petri_top - patch', 'petri_outer - patch',
-                        'petri_bottom - patch']
-simulation.VolumeFields = ['U', 'c', 'p', 'p_rgh', 'wallShearStress']
+simulation.MeshParts = ['internalMesh', 'yeast_top - patch', 'yeast_bottom - patch', 'petri_top - patch', 'petri_outer - patch', 'petri_bottom - patch']
+simulation.VolumeFields = ['c', 'p_rgh', 'U', 'wallShearStress', 'p']
 
 # create a new 'Slice'
 slice1 = Slice(Input=simulation)
