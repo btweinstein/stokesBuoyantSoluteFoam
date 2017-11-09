@@ -35,6 +35,9 @@ print patch_paths
 
 simulation = LegacyVTKReader(FileNames=patch_paths)
 
+# From the patches (cell data), create point data
+simulation = CellDatatoPointData(Input=simulation)
+
 # create a new 'Slice'
 slice1 = Slice(Input=simulation)
 
