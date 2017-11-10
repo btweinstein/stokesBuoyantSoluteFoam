@@ -263,12 +263,12 @@ class Simulation(object):
                  '-allPatches', '-fields', '(c p_rgh U wallShearStress p)'],
                                                 stdout=f_out, stderr=f_err)
 
-    def paraview_extract_boundary_info(self):
+    def paraview_extract_boundary_info(self, thin_factor=1):
         script_path = paraview_script_dir + 'get_boundary_data.py'
         rmax = self.nd_r_petri.magnitude
         with open(self.sim_path + '/boundary_log.txt', 'wb') as f_out, \
                 open(self.sim_path + '/boundary_err.txt', 'wb') as f_err:
-            self.cur_process = subprocess.Popen(['pvbatch', script_path, self.sim_path + '/', str(rmax)],
+            self.cur_process = subprocess.Popen(['pvbatch', script_path, self.sim_path + '/', str(rmax), str(thin_factor)],
                                                 stdout=f_out, stderr=f_err)
 
     def get_boundary_info_df(self, desired_axis):

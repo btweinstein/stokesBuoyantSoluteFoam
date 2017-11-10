@@ -12,9 +12,11 @@ import numpy as np
 # Parse the inputs
 simulation_dir = sys.argv[1]
 r_max = float(sys.argv[2])
+thin_factor = int(sys.argv[3])
 
 print simulation_dir
 print r_max
+print thin_factor # If we don't want to get data from every time point...
 
 # create a new 'OpenFOAMReader'
 vtk_folder = simulation_dir + 'VTK/'
@@ -31,6 +33,8 @@ order = np.argsort(file_numbers)
 
 patch_paths = np.array(patch_paths)
 patch_paths = patch_paths[order]
+# Now thin the results
+patch_paths = patch_paths[::thin_factor]
 print patch_paths
 
 simulation = LegacyVTKReader(FileNames=patch_paths)
