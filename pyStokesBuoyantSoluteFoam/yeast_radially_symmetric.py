@@ -274,10 +274,18 @@ class Simulation(object):
     def get_boundary_info_df(self, desired_axis):
         # Requires paraview_extract_boundary_info to be run first!
 
-        csv_files = glob.glob(self.sim_path + '/axis_' + desired_axis + '/*')
+        folder_path = self.sim_path + '/axis_' + desired_axis + '/'
+
+        csv_files = glob.glob(folder_path + '*.csv')
         if len(csv_files) == 0:
             print 'I can\'t find info on that axis...'
             raise ValueError
+
+        # Get the thinning factor to appropriately get the times
+        with open(folder_path + 'thin_factor.txt', 'rb') as fi:
+            line = fi.readline()
+            thin_factor = int(line)
+            print 'thin factor:', thin_factor
 
         time_list = [] # Organize all of the time points
 
@@ -302,7 +310,7 @@ class Simulation(object):
             # Figure out what timepoint this corresponds to
             csv_basename = os.path.basename(cur_csv)
 
-            time_index = int(csv_basename.split('.')[1])
+            time_index = thin_factor * int(csv_basename.split('.')[1])
             time = time_list[time_index]
 
             cur_df['time_index'] = time_index

@@ -100,3 +100,9 @@ for cur_line_points, cur_axis_name in zip(line_points, axis_names):
     os.makedirs(folder_path)
 
     SaveData(folder_path + cur_axis_name + '.csv', proxy=cur_line, WriteAllTimeSteps=1)
+    # Unfortunately, if you thinned the data, the files will not have the appropriate time index. Let's fix that...
+    csv_paths = glob.glob(folder_path + '*.csv')
+    # Write what the thin factor was to disk...we need this later to get what the *actual*
+    # times are!
+    with open(folder_path + 'thin_factor.txt', 'wb') as fi:
+        fi.write(str(thin_factor))
