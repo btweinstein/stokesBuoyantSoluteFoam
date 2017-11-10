@@ -285,7 +285,6 @@ class Simulation(object):
         with open(folder_path + 'thin_factor.txt', 'rb') as fi:
             line = fi.readline()
             thin_factor = int(line)
-            print 'thin factor:', thin_factor
 
         time_list = [] # Organize all of the time points
 
