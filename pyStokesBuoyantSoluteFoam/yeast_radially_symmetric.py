@@ -290,9 +290,13 @@ class Simulation(object):
             raise ValueError
 
         # Get the thinning factor to appropriately get the times
-        with open(folder_path + 'thin_factor.txt', 'rb') as fi:
-            line = fi.readline()
-            thin_factor = int(line)
+        try:
+            with open(folder_path + 'thin_factor.txt', 'rb') as fi:
+                line = fi.readline()
+                thin_factor = int(line)
+        except IOError:
+            print 'Could not find thinning file. Setting thinning to 1'
+            thin_factor = 1
 
         time_list = [] # Organize all of the time points
 
