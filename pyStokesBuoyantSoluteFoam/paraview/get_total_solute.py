@@ -69,3 +69,8 @@ if os.path.isdir(folder_path):
 os.makedirs(folder_path)
 
 SaveData(folder_path + 'total_solute.csv', proxy=integrateVariables1, WriteAllTimeSteps=1)
+
+# Write what the thin factor was to disk...we need this later to get what the *actual*
+# times are!
+with open(folder_path + 'thin_factor.txt', 'wb') as fi:
+    fi.write(str(thin_factor))

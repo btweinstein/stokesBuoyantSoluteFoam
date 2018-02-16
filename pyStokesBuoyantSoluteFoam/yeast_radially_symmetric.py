@@ -331,3 +331,55 @@ class Simulation(object):
 
         df = pd.concat(df_list)
         return df
+
+    def get_total_conc_df(self):
+        # Requires paraview_get_total_solute to be run first!
+
+        folder_path = self.sim_path + '/total_solute/'
+
+        csv_files = glob.glob(folder_path + '*.csv')
+        if len(csv_files) == 0:
+            print 'I can\'t find info on that axis...'
+            raise ValueError
+
+        # Get the thinning factor to appropriately get the times
+        with open(folder_path + 'thin_factor.txt', 'rb') as fi:
+            line = fi.readline()
+            thin_factor = int(line)
+
+        time_list = [] # Organize all of the time points
+
+        contents = glob.glob(self.sim_path + '/*')
+        for cur_folder in contents:
+            cur_basename = os.path.basename(cur_folder)
+            time = None
+            try:
+                time = float(cur_basename)
+                time_list.append(time)
+            except ValueError:
+                pass
+        time_list.sort()
+
+        df_list = []
+        for cur_csv in csv_files:
+            cur_df = pd.read_csv(cur_csv)
+            # cur_df.rename(columns={'U:0': 'ux', 'U:1': 'uy', 'U:2': 'uz',
+            #                        'wallShearStress:0': 'tau_nx', 'wallShearStress:1': 'tau_ny',
+            #                        'wallShearStress:2': 'tau_nz',
+            #                        'Points:0': 'x', 'Points:1': 'y', 'Points:2': 'z'}, inplace=True)
+            # Figure out what timepoint this corresponds to
+            csv_basename = os.path.basename(cur_csv)
+
+            time_index = thin_factor * int(csv_basename.split('.')[1])
+            time = time_list[time_index]
+
+            cur_df['time_index'] = time_index
+            cur_df['time'] = time
+
+            cur_df = cur_df[['2p_r_c', 'time', 'time_index']]
+            cur_df.rename(columns={'2p_r_c': 'total_c'}, inplace=True)
+
+            df_list.append(cur_df)
+
+        df = pd.concat(df_list)
+        return df
